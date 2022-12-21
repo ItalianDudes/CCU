@@ -1,0 +1,36 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
+}
+
+group 'it.italiandudes'
+version '1.0R'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:23.0.0'
+    implementation 'commons-codec:commons-codec:1.15'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'it.italiandudes:idl:1.0.0'
+    //implementation group: 'org.xerial', name:'sqlite-jdbc', version:'3.40.0.0'
+}
+
+shadowJar {
+    manifest {
+        attributes "Main-Class" : "it.italiandudes.dnd_visualizer.DnD_Visualizer"
+    }
+    archiveFileName = getRootDir().getName()+"-"+archiveVersion.get()+".jar"
+}
+
+task buildAndRun(type: Exec) {
+    dependsOn shadowJar
+    group = "Execution"
+    description = "Run the mainClass from the output jar in classpath with ExecTask"
+    commandLine "java", "-jar", jar.archiveFile.get()
+}
