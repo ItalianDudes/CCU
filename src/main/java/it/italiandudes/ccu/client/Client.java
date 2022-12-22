@@ -31,11 +31,13 @@ public final class Client extends Application {
     }
 
     //Start Methods
-    public static void start(String[] args){
+    public static int start(String[] args){
         launch(args);
+        return 0;
     }
-    public static void noGuiStart(String[] args){
+    public static int noGuiStart(String[] args){
         Logger.log("Not implemented yet");
+        return 0;
     }
 
 }

@@ -23,14 +23,29 @@ dependencies {
 
 shadowJar {
     manifest {
-        attributes "Main-Class" : "it.italiandudes.dnd_visualizer.DnD_Visualizer"
+        attributes "Main-Class" : "it.italiandudes.ccu.CCU"
     }
     archiveFileName = getRootDir().getName()+"-"+archiveVersion.get()+".jar"
 }
 
-task buildAndRun(type: Exec) {
+task runClient(type: Exec) {
     dependsOn shadowJar
     group = "Execution"
-    description = "Run the mainClass from the output jar in classpath with ExecTask"
+    standardInput = System.in;
+    description = "Run CCU from the output jar in classpath with ExecTask"
     commandLine "java", "-jar", jar.archiveFile.get()
+}
+task runClientTextualMode(type: Exec) {
+    dependsOn shadowJar
+    group = "Execution"
+    standardInput = System.in
+    description = "Run CCU on Textual-Mode from the output jar in classpath with ExecTask"
+    commandLine "java", "-jar", jar.archiveFile.get(), "-nogui"
+}
+task runServer(type: Exec) {
+    dependsOn shadowJar
+    group = "Execution"
+    standardInput = System.in
+    description = "Run CCU on Server-Mode from the output jar in classpath with ExecTask"
+    commandLine "java", "-jar", jar.archiveFile.get(), "-server"
 }

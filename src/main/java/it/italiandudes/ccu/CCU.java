@@ -7,7 +7,7 @@ import it.italiandudes.idl.common.Logger;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public final class CCU {
 
     //App Common Data
@@ -24,15 +24,10 @@ public final class CCU {
 
     }
 
-    //App Shutdown Hook
-    private static Thread getShutdownHook(){
-        return new Thread(() -> {
-            Logger.close();
-        });
-    }
-
     //Main Method
     public static void main(String[] args) {
+
+        int exitCode;
 
         //Check if the user want to run the app even if the Logger initialization fails
         boolean logOnDefaultStreamIfLoggerFail = Arrays.stream(args).
@@ -48,6 +43,7 @@ public final class CCU {
                 if(!logOnDefaultStreamIfLoggerFail)
                     System.exit(Defs.ReturnCodes.LOGGER_INIT_ERROR);
             }
+            Runtime.getRuntime().addShutdownHook(new Thread(Logger::close));
         }catch (Exception e) {
             System.err.println("An exception has occurred during Logger initialization.");
             e.printStackTrace();
@@ -55,21 +51,23 @@ public final class CCU {
                 System.exit(Defs.ReturnCodes.LOGGER_INIT_ERROR);
         }
 
-        Runtime.getRuntime().addShutdownHook(getShutdownHook()); //Add the App Shutdown Hook
-
         if(Arrays.stream(args).anyMatch(Predicate.isEqual(Defs.LaunchArgs.START_SERVER))){ //Start the server
             args = Arrays.stream(args).
                     filter(Predicate.isEqual(Defs.LaunchArgs.START_SERVER)).
                     toArray(String[]::new);
-            Server.start(args);
+            exitCode = Server.start(args);
         }else if(Arrays.stream(args).anyMatch(Predicate.isEqual(Defs.LaunchArgs.START_TEXTUAL_APP))){ //Start the client in textual-mode
             args = Arrays.stream(args).
                     filter(Predicate.isEqual(Defs.LaunchArgs.START_TEXTUAL_APP)).
                     toArray(String[]::new);
-            Client.noGuiStart(args);
+            exitCode = Client.noGuiStart(args);
         }else{ //Start the client in graphic-mode
-            Client.start(args);
+            exitCode = Client.start(args);
         }
+
+        Logger.log("Application terminating with code: "+exitCode);
+
+        System.exit(exitCode);
     }
 
     //App Generic Constants
@@ -90,9 +88,11 @@ public final class CCU {
 
             //Pre Launch Codes
             public static final int LOGGER_INIT_ERROR = -100;
+            public static final int WHITE_DB_LOAD_ERROR = -201;
+            public static final int BLACK_DB_LOAD_ERROR = -202;
 
             //Post-Launch Codes
-
+            public static final int SERVER_CONFIG_WRITE_ERROR = 307;
         }
 
     }

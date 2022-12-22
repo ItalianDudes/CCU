@@ -17,9 +17,14 @@ public class JFXDefs {
     }
 
     public static final class SceneDefs {
-        private static final String FXML_PATH = "/fxml/";
-        public static final String SCENE_START = FXML_PATH+"";
-        public static final String SCENE_LOADING = FXML_PATH+"scene_loading.fxml";
+        private static final String FXML_DIRECTORY = "/fxml/";
+        public static final String SCENE_START = FXML_DIRECTORY +"";
+        public static final String SCENE_LOADING = FXML_DIRECTORY +"scene_loading.fxml";
+    }
+
+    public static final class ResourceDefs {
+        public static final String GIF_DIRECTORY = "/gif/";
+        public static final String GIF_LOADING = GIF_DIRECTORY+"loading.gif";
     }
 
 }
