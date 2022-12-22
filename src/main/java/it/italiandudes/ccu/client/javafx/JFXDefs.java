@@ -18,8 +18,9 @@ public class JFXDefs {
 
     public static final class SceneDefs {
         private static final String FXML_DIRECTORY = "/fxml/";
-        public static final String SCENE_START = FXML_DIRECTORY +"";
-        public static final String SCENE_LOADING = FXML_DIRECTORY +"scene_loading.fxml";
+        public static final String SCENE_STARTUP_1 = FXML_DIRECTORY +"ServerSelectionStage.fxml";
+        public static final String SCENE_STARTUP_2 = FXML_DIRECTORY+"ServerSelectionListStage.fxml";
+        public static final String SCENE_LOADING = FXML_DIRECTORY +"SceneLoading.fxml";
     }
 
     public static final class ResourceDefs {

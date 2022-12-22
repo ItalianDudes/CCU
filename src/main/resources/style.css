@@ -1,0 +1,32 @@
+/*It's awful, but this is how you can create variables if you're using CSS with JavaFX. Only works with colors.*/
+*{
+    -fx--text-color: #999999;
+    -fx--not-clicable: #777777;
+    -fx--selected: #777777;
+    -fx--background: #555555;
+    -fx--special-background: #333333;
+    -fx--blackcard-background: #111111;
+}
+
+.stageBackground {
+    -fx-background-color: -fx--background;
+}
+
+.labelColor {
+    -fx-text-fill: -fx--text-color;
+}
+
+.btnOff {
+    -fx-background-color: -fx--not-clicable;
+    -fx-text-fill: -fx--text-color;
+}
+
+.btnOn {
+    -fx-background-color: -fx--special-background;
+    -fx-text-fill: -fx--text-color;
+}
+
+.txt {
+    -fx-background-color: -fx--special-background;
+    -fx-text-fill: -fx--text-color;
+}
