@@ -29,7 +29,7 @@ public final class CCU {
 
         int exitCode;
 
-        //Check if the user want to run the app even if the Logger initialization fails
+        //Check if the user wants to run the app even if the Logger initialization fails
         boolean logOnDefaultStreamIfLoggerFail = Arrays.stream(args).
                 anyMatch(Predicate.isEqual(Defs.LaunchArgs.LOG_ON_DEFAULT_STREAM_IF_LOGGER_INIT_FAIL));
         if(logOnDefaultStreamIfLoggerFail)
@@ -72,6 +72,13 @@ public final class CCU {
 
     //App Generic Constants
     public static class Defs {
+
+        //Regexes
+        public static final class Regexes{
+            public final static String IPV6_VALIDATION_REGEX = "^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$";
+            public final static String IPV4_VALIDATION_REGEX = "^((0|(25[0-5]|2[0-4][0-9])|1[0-9][0-9]|([1-9][0-9]|[0-9]))\\.){3}(0|(25[0-5]|2[0-4][0-9])|1[0-9][0-9]|([1-9][0-9]|[0-9]))$";
+            public final static String DNS_VALIDATION_REGEX = "^([A-Za-z0-9]+[A-Za-z0-9\\-]*[A-Za-z0-9]?(?<!-))(\\.[A-Za-z0-9]+[A-Za-z0-9\\-]*[A-Za-z0-9]?(?<!-))+$";
+        }
 
         //Launch Arguments
         public static final class LaunchArgs {
