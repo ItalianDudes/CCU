@@ -111,8 +111,12 @@ public final class CCU {
                 public static final String AUTH_ERROR = "autherr";
                 public static final String AUTH_CORRECT = "authok";
             }
+            public static final class Lobby {
+                public static final String PLAYER_JOIN = "pjoin";
+                public static final String PLAYER_QUIT = "pquit";
+                public static final String GAME_START = "gstart";
+            }
             public static final String DISCONNECT = "disc";
-            public static final String GAME_START = "game_start";
         }
 
     }
