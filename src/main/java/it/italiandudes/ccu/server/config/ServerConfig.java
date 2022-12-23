@@ -3,19 +3,22 @@ package it.italiandudes.ccu.server.config;
 import it.italiandudes.ccu.server.Server;
 import it.italiandudes.ccu.server.Server.ServerDefs.Configuration;
 import it.italiandudes.idl.common.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
 public final class ServerConfig {
 
     //Default Configs
-    private static final HashMap<String, String> DEFAULT_CONFIG = getDefaultConfigs();
+    @NotNull private static final HashMap<String, String> DEFAULT_CONFIG = getDefaultConfigs();
 
     //Methods
-    private static HashMap<String, String> getDefaultConfigs(){
+    @NotNull private static HashMap<String, String> getDefaultConfigs(){
         HashMap<String, String> configMap = new HashMap<>();
 
         //Port
@@ -24,10 +27,19 @@ public final class ServerConfig {
         //Password
         configMap.put(Configuration.KEY_PASSWORD, Configuration.Default.VALUE_PASSWORD);
 
+        //Max Players
+        configMap.put(Configuration.KEY_MAX_PLAYERS, String.valueOf(Configuration.Default.VALUE_MAX_PLAYERS));
+
+        //White Cards Given
+        configMap.put(Configuration.KEY_WHITE_CARDS_GIVEN, String.valueOf(Configuration.Default.VALUE_WHITE_CARDS_GIVEN));
+
+        //Keep Unused White Cards
+        configMap.put(Configuration.KEY_KEEP_CARDS, String.valueOf(Configuration.Default.VALUE_KEEP_CARDS));
+
         return configMap;
     }
-    public static HashMap<String, String> readConfigFile(){
-        File configFile = new File(Server.ServerDefs.Paths.CONFIG_FILE);
+    @NotNull public static HashMap<String, String> readConfigFile(){
+        File configFile = new File(Server.ServerDefs.Path.CONFIG_FILE);
         if(!configFile.exists() || !configFile.isFile())
             return DEFAULT_CONFIG;
 
@@ -52,20 +64,25 @@ public final class ServerConfig {
 
         inFile.close();
 
-        return configMap;
-
-
+        return (checkConfigFileIntegrity(configMap)?configMap:getDefaultConfigs());
     }
-    public static boolean writeConfigFile(HashMap<String, String> configs){
+    private static boolean checkConfigFileIntegrity(@NotNull HashMap<String, String> configMap){
+        for(String key : configMap.keySet()){
+            if(Arrays.stream(Configuration.KEYS).noneMatch(Predicate.isEqual(key)))
+                return false;
+        }
+        return true;
+    }
+    public static boolean writeConfigFile(@NotNull HashMap<String, String> configs){
 
-        File serverDirectory = new File(Server.ServerDefs.Paths.SERVER_DIRECTORY);
+        File serverDirectory = new File(Server.ServerDefs.Path.SERVER_DIRECTORY);
 
         if(!serverDirectory.exists() || !serverDirectory.isDirectory()){
             //noinspection ResultOfMethodCallIgnored
             serverDirectory.mkdirs();
         }
 
-        File configFile = new File(Server.ServerDefs.Paths.CONFIG_FILE);
+        File configFile = new File(Server.ServerDefs.Path.CONFIG_FILE);
 
         if(!configFile.exists() || !configFile.isFile()){
             try {
@@ -88,6 +105,15 @@ public final class ServerConfig {
             //Password
             appendConfig(outFile, Configuration.COMMENT_PASSWORD, Configuration.KEY_PASSWORD, configs);
 
+            //Max Lobby Size
+            appendConfig(outFile, Configuration.COMMENT_MAX_PLAYERS, Configuration.KEY_MAX_PLAYERS, configs);
+
+            //White Cards Given
+            appendConfig(outFile, Configuration.COMMENT_WHITE_CARDS_GIVEN, Configuration.KEY_WHITE_CARDS_GIVEN, configs);
+
+            //Keep Unused White Cards
+            appendConfig(outFile, Configuration.COMMENT_KEEP_CARDS, Configuration.KEY_KEEP_CARDS, configs);
+
             //Flush & Close
             outFile.flush();
             outFile.close();
@@ -104,7 +130,7 @@ public final class ServerConfig {
     }
 
     //Utility Methods
-    private static void appendConfig(BufferedWriter outFile, String comment, String key, HashMap<String, String> configs) throws IOException {
+    private static void appendConfig(@NotNull BufferedWriter outFile, @NotNull String comment, @NotNull String key, @NotNull HashMap<String, String> configs) throws IOException {
         outFile.append(comment).
                 append('\n').
                 append(key).
@@ -112,5 +138,4 @@ public final class ServerConfig {
                 append(configs.get(key)).
                 append('\n');
     }
-
 }

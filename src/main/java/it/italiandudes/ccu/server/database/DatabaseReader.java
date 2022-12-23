@@ -14,14 +14,14 @@ public final class DatabaseReader {
     //Methods
     public static WhiteCardsDB readWhiteCardsDB(){
 
-        File databaseDirectory = new File(Server.ServerDefs.Paths.DB_DIRECTORY);
+        File databaseDirectory = new File(Server.ServerDefs.Path.DB_DIRECTORY);
 
         if(! databaseDirectory.exists() || !databaseDirectory.isDirectory()){
             //noinspection ResultOfMethodCallIgnored
             databaseDirectory.mkdirs();
         }
 
-        File whiteDatabaseDB = new File(Server.ServerDefs.Paths.WHITE_CARDS_DB);
+        File whiteDatabaseDB = new File(Server.ServerDefs.Path.WHITE_CARDS_DB);
 
         if(!whiteDatabaseDB.exists() || !whiteDatabaseDB.isFile()){
             return null;
@@ -48,14 +48,14 @@ public final class DatabaseReader {
     }
     public static BlackCardsDB readBlackCardsDB(){
 
-        File databaseDirectory = new File(Server.ServerDefs.Paths.DB_DIRECTORY);
+        File databaseDirectory = new File(Server.ServerDefs.Path.DB_DIRECTORY);
 
         if(! databaseDirectory.exists() || !databaseDirectory.isDirectory()){
             //noinspection ResultOfMethodCallIgnored
             databaseDirectory.mkdirs();
         }
 
-        File blackDatabaseDB = new File(Server.ServerDefs.Paths.BLACK_CARDS_DB);
+        File blackDatabaseDB = new File(Server.ServerDefs.Path.BLACK_CARDS_DB);
 
         if(!blackDatabaseDB.exists() || !blackDatabaseDB.isFile()){
             return null;

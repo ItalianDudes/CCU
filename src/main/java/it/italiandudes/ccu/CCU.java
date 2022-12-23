@@ -90,6 +90,7 @@ public final class CCU {
             public static final int LOGGER_INIT_ERROR = -100;
             public static final int WHITE_DB_LOAD_ERROR = -201;
             public static final int BLACK_DB_LOAD_ERROR = -202;
+            public static final int SERVER_START_FAIL = -81;
 
             //Post-Launch Codes
             public static final int SERVER_CONFIG_WRITE_ERROR = 307;

@@ -17,7 +17,7 @@ public final class WhiteCardsDB {
     }
 
     //Methods
-    @NotNull public ArrayList<WhiteCard> getWhiteCards(){
+    @NotNull public ArrayList<WhiteCard> getWhiteCardsList(){
         return whiteCards;
     }
     @Override
@@ -27,11 +27,11 @@ public final class WhiteCardsDB {
 
         WhiteCardsDB that = (WhiteCardsDB) o;
 
-        return getWhiteCards().equals(that.getWhiteCards());
+        return getWhiteCardsList().equals(that.getWhiteCardsList());
     }
     @Override
     public int hashCode() {
-        return getWhiteCards().hashCode();
+        return getWhiteCardsList().hashCode();
     }
     @Override
     public String toString() {

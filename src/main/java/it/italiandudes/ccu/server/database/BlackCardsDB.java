@@ -19,7 +19,7 @@ public final class BlackCardsDB {
     }
 
     //Methods
-    @NotNull public ArrayList<BlackCard> getBlackCards(){
+    @NotNull public ArrayList<BlackCard> getBlackCardsList(){
         return blackCards;
     }
     @NotNull public Character getFieldKey(){
@@ -32,12 +32,12 @@ public final class BlackCardsDB {
 
         BlackCardsDB that = (BlackCardsDB) o;
 
-        if (!getBlackCards().equals(that.getBlackCards())) return false;
+        if (!getBlackCardsList().equals(that.getBlackCardsList())) return false;
         return getFieldKey().equals(that.getFieldKey());
     }
     @Override
     public int hashCode() {
-        int result = getBlackCards().hashCode();
+        int result = getBlackCardsList().hashCode();
         result = 31 * result + getFieldKey().hashCode();
         return result;
     }

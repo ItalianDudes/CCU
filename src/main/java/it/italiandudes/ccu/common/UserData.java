@@ -11,14 +11,14 @@ import java.util.ArrayList;
 public final class UserData {
 
     //Connection Data
-    private final String username;
-    private final String serverPassword;
-    private final Socket connection;
+    @NotNull private final String username;
+    @NotNull private final String serverPassword;
+    @NotNull private final Socket connection;
 
     //Game Data
     private boolean isCardMaster;
     private int roundWon;
-    private final ArrayList<GameCard> currentCards = new ArrayList<>();
+    @NotNull private final ArrayList<GameCard> currentCards = new ArrayList<>();
 
     //Constructors
     public UserData(@NotNull String username, @NotNull String serverPassword, @NotNull Socket connection){
@@ -81,6 +81,15 @@ public final class UserData {
         roundWon = 0;
         currentCards.clear();
     }
+    @NotNull public String getUsername(){
+        return username;
+    }
+    @NotNull public String getServerPassword(){
+        return serverPassword;
+    }
+    @NotNull public Socket getConnection(){
+        return connection;
+    }
     public void setCardMaster(boolean isCardMaster){
         this.isCardMaster = isCardMaster;
     }
@@ -93,7 +102,7 @@ public final class UserData {
     public int getRoundWon(){
         return roundWon;
     }
-    public ArrayList<GameCard> getCurrentCards(){
+    @NotNull public ArrayList<GameCard> getCurrentCards(){
         return currentCards;
     }
     @Override
@@ -105,16 +114,16 @@ public final class UserData {
 
         if (isCardMaster() != userData.isCardMaster()) return false;
         if (getRoundWon() != userData.getRoundWon()) return false;
-        if (!username.equals(userData.username)) return false;
-        if (!serverPassword.equals(userData.serverPassword)) return false;
-        if (!connection.equals(userData.connection)) return false;
+        if (!getUsername().equals(userData.getUsername())) return false;
+        if (!getServerPassword().equals(userData.getServerPassword())) return false;
+        if (!getConnection().equals(userData.getConnection())) return false;
         return getCurrentCards().equals(userData.getCurrentCards());
     }
     @Override
     public int hashCode() {
-        int result = username.hashCode();
-        result = 31 * result + serverPassword.hashCode();
-        result = 31 * result + connection.hashCode();
+        int result = getUsername().hashCode();
+        result = 31 * result + getServerPassword().hashCode();
+        result = 31 * result + getConnection().hashCode();
         result = 31 * result + (isCardMaster() ? 1 : 0);
         result = 31 * result + getRoundWon();
         result = 31 * result + getCurrentCards().hashCode();
