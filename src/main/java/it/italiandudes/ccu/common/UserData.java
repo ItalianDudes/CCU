@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public final class UserData {
 
     //Connection Data
-    @NotNull private final String username;
-    private String serverPassword;
+    @NotNull private String username;
+    @NotNull private String serverPassword;
     @NotNull private final Socket connection;
 
     //Game Data
@@ -83,6 +83,9 @@ public final class UserData {
     }
     @NotNull public String getUsername(){
         return username;
+    }
+    public void setUsername(@NotNull String username){
+        this.username = username;
     }
     @NotNull public String getServerPassword(){
         return serverPassword;
