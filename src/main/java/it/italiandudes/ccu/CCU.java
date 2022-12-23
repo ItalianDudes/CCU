@@ -27,6 +27,8 @@ public final class CCU {
     //Main Method
     public static void main(String[] args) {
 
+        System.out.println(Defs.JAR_POSITION);
+
         int exitCode;
 
         //Check if the user wants to run the app even if the Logger initialization fails
@@ -72,6 +74,8 @@ public final class CCU {
 
     //App Generic Constants
     public static class Defs {
+
+        public static final String JAR_POSITION = CCU.class.getProtectionDomain().getCodeSource().getLocation().getPath().substring(1);
 
         //Regexes
         public static final class Regexes{
