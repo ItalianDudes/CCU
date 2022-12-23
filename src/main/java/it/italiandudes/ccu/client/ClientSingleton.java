@@ -41,8 +41,7 @@ public class ClientSingleton {
         //I initialize the hashmap
         System.out.println("Properties initialization");
         properties = new HashMap<>();
-
-        ArrayList<Property> temp_properties = ConfigHandler.readConfigs(Client.Defs.Paths.CONFIG_FILE);
+        ArrayList<Property> temp_properties = ConfigHandler.readConfigs(Client.Defs.Path.CONFIG_FILE);
         for (Property tempProperty : temp_properties) {
             properties.put(tempProperty.getKey(), tempProperty.getValue());
         }

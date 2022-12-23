@@ -59,9 +59,12 @@ public final class Client extends Application {
     }
 
     public static final class Defs{
-        public static final class Paths{
-            public static final String CLIENT_DIR = "/client/";
+        public static final class Path {
+            public static final String CLIENT_DIR = "client/";
             public static final String CONFIG_FILE = CLIENT_DIR+"config.cfg";
+            public static final class Resource {
+
+            }
         }
 
         public static final class Config {
