@@ -45,8 +45,14 @@ public final class Client extends Application {
 
     public static final class Defs{
         public static final class Paths{
-            private static final String CLIENT_DIR = "/client/";
+            public static final String CLIENT_DIR = "/client/";
             public static final String CONFIG_FILE = CLIENT_DIR+"config.cfg";
+        }
+
+        public static final class Config {
+            public static final String USER_KEYWORD = "user";
+            public static final String SERVERS_KEYWORD = "servers";
+            public static final String LANG_KEYWORD = "language";
         }
     }
 

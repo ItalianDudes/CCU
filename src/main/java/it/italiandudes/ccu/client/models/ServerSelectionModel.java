@@ -2,21 +2,31 @@ package it.italiandudes.ccu.client.models;
 
 import it.italiandudes.ccu.CCU;
 import it.italiandudes.ccu.client.Client;
+import it.italiandudes.ccu.client.ClientSingleton;
 import it.italiandudes.idl.common.ConfigHandler;
 import it.italiandudes.idl.common.Property;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 
+import java.net.InetAddress;
 import java.net.PortUnreachableException;
+import java.net.UnknownHostException;
+import java.rmi.AlreadyBoundException;
 import java.util.ArrayList;
 
 //TODO: scrivere la documentazione e inserire la licenza.
-public class ServerSelectionModel {
+public final class ServerSelectionModel {
 
     //TODO: finire il metodo.
-    public void confirm(String serverName, String alias) throws PortUnreachableException {
+    public void confirm(String serverName, String alias) throws PortUnreachableException, ConfigFormatException, AlreadyBoundException, UnknownHostException {
         if(hostNameValidation(serverName)){
 
+            if(isAliasAlreadyTaken(alias)){
+                throw new AlreadyBoundException("The alias is already bound to a server.");
+            }
 
+            InetAddress address = InetAddress.getByName(serverName);        //I retrieve the actual ip.
+
+            ClientSingleton.getInstance().addServer("("+alias+","+serverName+",)");
         }
     }
 
@@ -41,13 +51,25 @@ public class ServerSelectionModel {
         return hostName.matches(CCU.Defs.Regexes.DNS_VALIDATION_REGEX);
     }
 
-    /*
-    TODO: finire il metodo
     private boolean isAliasAlreadyTaken(String alias) throws ConfigFormatException {
-        ArrayList<Property> properties = ConfigHandler.readConfigs(Client.Defs.Paths.CONFIG_FILE);
+        String[] serverAliases;
+        if(ClientSingleton.getInstance().getProperty(Client.Defs.Config.SERVERS_KEYWORD).getValue()==null){
+            return false;
+        }else{
+            serverAliases = ClientSingleton.getInstance().getProperty(Client.Defs.Config.SERVERS_KEYWORD).getValue().split("\\),\\(");
 
-        for(int i=0; i){
+            if(serverAliases.length==0){
+                return false;
+            }else{
+                for (String serverAlias : serverAliases) {
+                    String temp_alias = serverAlias.replace("(", "").trim().split(",")[0];
 
+                    if (alias.equals(temp_alias)) {
+                        return true;
+                    }
+                }
+            }
         }
-    }*/
+        return false;
+    }
 }
