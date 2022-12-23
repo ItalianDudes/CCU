@@ -1,6 +1,7 @@
 package it.italiandudes.ccu.client.javafx.controller;
 
 import it.italiandudes.ccu.client.models.ServerSelectionModel;
+import it.italiandudes.ccu.common.annotations.ControllerClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 //TODO: finire di configurare la classe e di inserire la licenza
+@ControllerClass
 public class ServerSelectionController {
 
     private ServerSelectionModel model;
