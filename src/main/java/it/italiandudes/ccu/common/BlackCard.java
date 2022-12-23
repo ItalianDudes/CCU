@@ -2,7 +2,7 @@ package it.italiandudes.ccu.common;
 
 import org.jetbrains.annotations.NotNull;
 
-public class BlackCard extends GameCard {
+public final class BlackCard extends GameCard {
 
     //Attributes
     private int fieldAmount;

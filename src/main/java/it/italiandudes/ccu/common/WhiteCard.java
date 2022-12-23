@@ -2,9 +2,9 @@ package it.italiandudes.ccu.common;
 
 import org.jetbrains.annotations.NotNull;
 
-public class WhiteCard extends GameCard {
+public final class WhiteCard extends GameCard {
 
-    //Constuctors
+    //Constructors
     public WhiteCard(@NotNull Integer cardID, @NotNull String content) {
         super(cardID, content);
     }
