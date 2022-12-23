@@ -108,6 +108,7 @@ public final class CCU {
             public static final class Login {
                 public static final String PWD_REQUIRED = "needpwd";
                 public static final String PWD_NOT_REQUIRED = "nopwd";
+                public static final String SERVER_FULL = "sfull";
                 public static final String AUTH_ERROR = "autherr";
                 public static final String AUTH_CORRECT = "authok";
             }
