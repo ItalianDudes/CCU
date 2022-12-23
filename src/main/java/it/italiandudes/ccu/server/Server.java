@@ -156,13 +156,5 @@ public final class Server {
             }
             public static final String CLEAR_LOBBY = "clobby";
         }
-
-        //Protocol Strings
-        public static final class Protocol {
-            public static final String DISCONNECT = "disc";
-            public static final String GAME_START = "game_start";
-        }
-
     }
-
 }

@@ -1,5 +1,6 @@
 package it.italiandudes.ccu.server.network;
 
+import it.italiandudes.ccu.CCU;
 import it.italiandudes.ccu.common.UserData;
 import it.italiandudes.ccu.server.Server;
 import it.italiandudes.idl.common.RawSerializer;
@@ -22,7 +23,7 @@ public final class LobbyHandler {
         for(UserData userData : userList){
             if(userData.getUsername().equals(username)){
                 try {
-                    RawSerializer.sendString(userData.getConnection().getOutputStream(), Server.ServerDefs.Protocol.DISCONNECT);
+                    RawSerializer.sendString(userData.getConnection().getOutputStream(), CCU.Defs.Protocol.DISCONNECT);
                 }catch (IOException ignored){}
                 try {
                     userData.getConnection().close();
