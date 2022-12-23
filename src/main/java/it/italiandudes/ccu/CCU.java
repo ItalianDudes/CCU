@@ -77,7 +77,7 @@ public final class CCU {
         public static final class Regexes{
             public final static String IPV6_VALIDATION_REGEX = "^\\[([0-9A-Fa-f]{1,4}:){5}[0-9A-Fa-f]{1,4}\\]";
             public final static String IPV4_VALIDATION_REGEX = "^((0|(25[0-5]|2[0-4][0-9])|1[0-9][0-9]|([1-9][0-9]|[0-9]))\\.){3}(0|(25[0-5]|2[0-4][0-9])|1[0-9][0-9]|([1-9][0-9]|[0-9]))";
-            public final static String DNS_VALIDATION_REGEX = "^([A-Za-z0-9]+[A-Za-z0-9\\-]*[A-Za-z0-9]?(?<!-))(\\.[A-Za-z0-9]+[A-Za-z0-9\\-]*[A-Za-z0-9]?(?<!-))+$";
+            public final static String DNS_VALIDATION_REGEX = "^([A-Za-z0-9]+[A-Za-z0-9\\-]*[A-Za-z0-9]?(?<!-))(\\.[A-Za-z0-9]+[A-Za-z0-9\\-]*[A-Za-z0-9]?(?<!-))+";
         }
 
         //Launch Arguments

@@ -1,6 +1,5 @@
 package it.italiandudes.ccu.client;
 
-import it.italiandudes.ccu.CCU;
 import it.italiandudes.ccu.client.javafx.JFXDefs;
 import it.italiandudes.ccu.client.javafx.controller.ServerSelectionController;
 import it.italiandudes.ccu.client.models.ServerSelectionModel;
@@ -16,21 +15,37 @@ public final class Client extends Application {
     //Graphic Start
     @Override
     public void start(Stage stage) throws Exception {
+        ClientSingleton.getInstance().loadProperties();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.SCENE_STARTUP_1));
+        if(ClientSingleton.getInstance().isServerEmpty()){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.SCENE_STARTUP_1));
 
-        Parent root = loader.load();
+            Parent root = loader.load();
 
-        Scene scene = new Scene(root);
+            Scene scene = new Scene(root);
 
-        ServerSelectionController controller = loader.getController();
-        controller.setModel(new ServerSelectionModel());
+            ServerSelectionController controller = loader.getController();
+            controller.setModel(new ServerSelectionModel());
 
-        stage.setScene(scene);
-        stage.setTitle(JFXDefs.AppAssets.APP_TITLE);
-        stage.getIcons().add(JFXDefs.AppAssets.APP_ICON);
-        stage.show();
+            stage.setScene(scene);
+            stage.setTitle(JFXDefs.AppAssets.APP_TITLE);
+            stage.getIcons().add(JFXDefs.AppAssets.APP_ICON);
+            stage.show();
+        }else{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.SCENE_STARTUP_2));
 
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+
+            ServerSelectionController controller = loader.getController();
+            controller.setModel(new ServerSelectionModel());
+
+            stage.setScene(scene);
+            stage.setTitle(JFXDefs.AppAssets.APP_TITLE);
+            stage.getIcons().add(JFXDefs.AppAssets.APP_ICON);
+            stage.show();
+        }
     }
 
     //Start Methods

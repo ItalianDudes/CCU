@@ -6,9 +6,7 @@ import it.italiandudes.ccu.client.ClientSingleton;
 import it.italiandudes.ccu.common.UserData;
 import it.italiandudes.ccu.common.annotations.LogicalClass;
 import it.italiandudes.ccu.common.annotations.LogicalOperation;
-import it.italiandudes.ccu.server.Server;
-import it.italiandudes.idl.common.ConfigHandler;
-import it.italiandudes.idl.common.Property;
+import it.italiandudes.idl.common.RawSerializer;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,13 +14,11 @@ import java.io.IOException;
 import java.net.*;
 import java.rmi.AlreadyBoundException;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 
 //TODO: scrivere la documentazione e inserire la licenza.
 @LogicalClass
 public final class ServerSelectionModel {
 
-    //TODO: finire il metodo.
     @LogicalOperation
     public boolean confirm(@NotNull String serverName,@NotNull String alias) throws IOException, ConfigFormatException, AlreadyBoundException {
         int type;
@@ -42,12 +38,21 @@ public final class ServerSelectionModel {
                 ClientSingleton.getInstance().setUser(new UserData("","",ipAddress,port));
             }else{
                 String address = serverName.split(":")[0].trim();
-                int port = Integer.parseInt(serverName.split(":"));
-                ClientSingleton.getInstance().setUser(new Socket(address.getHostAddress(),));
+                int port = Integer.parseInt(serverName.split(":")[1].trim());
+                ClientSingleton.getInstance().setUser(new UserData("","",address,port));
             }
 
             String server = "("+alias+","+serverName+",)";
             ClientSingleton.getInstance().addServer(server);
+
+            String isPwdRequired = RawSerializer.receiveString(ClientSingleton.getInstance().getUser().getConnection().getInputStream());
+            if(isPwdRequired.equals(CCU.Defs.Protocol.Login.PWD_NOT_REQUIRED)){
+                return true;
+            }else if(isPwdRequired.equals(CCU.Defs.Protocol.Login.PWD_REQUIRED)){
+                return false;
+            }else if(isPwdRequired.equals(CCU.Defs.Protocol.Login.SERVER_FULL)){
+                throw new ConnectException("Connection rejected because the server is full");
+            }
         }
         throw new InvalidParameterException("The server address is not a valid address.");
     }

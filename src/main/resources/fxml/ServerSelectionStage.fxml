@@ -47,7 +47,10 @@
             </Button>
             <VBox fx:id="vb_errorSupplement" prefWidth="578.0" visible="false">
                <children>
-                  <Label fx:id="lab_errorSupplement" maxWidth="1.7976931348623157E308" text="Label" wrapText="true" />
+                  <Label fx:id="lab_errorSupplement" maxWidth="1.7976931348623157E308" styleClass="error-label" stylesheets="@../style.css" text="Label" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font></Label>
                </children>
             </VBox>
          </children>

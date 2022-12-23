@@ -7,7 +7,6 @@ import it.italiandudes.idl.common.Property;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.Socket;
 import java.util.*;
 
 @LogicalClass
@@ -79,5 +78,8 @@ public class ClientSingleton {
             //value is the only server saved in the servers' list.
             properties.put(Client.Defs.Config.SERVERS_KEYWORD,servers.replace("value",""));
         }
+    }
+    public boolean isServerEmpty(){
+        return properties.get(Client.Defs.Config.SERVERS_KEYWORD) == null || properties.get(Client.Defs.Config.SERVERS_KEYWORD).isEmpty();
     }
 }

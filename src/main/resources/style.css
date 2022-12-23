@@ -6,6 +6,8 @@
     -fx--background: #555555;
     -fx--special-background: #333333;
     -fx--blackcard-background: #111111;
+
+    -fx--error-text: #FF4040;
 }
 
 .stageBackground {
@@ -29,4 +31,24 @@
 .txt {
     -fx-background-color: -fx--special-background;
     -fx-text-fill: -fx--text-color;
+}
+
+.error-label {
+    -fx-text-fill: -fx--error-text;
+}
+
+.list {
+    -fx-background-color: -fx--special-background;
+}
+
+.list-cell {
+    -fx-text-fill: -fx--text-color;
+    -fx-background-color: -fx--special-background;
+    -fx-border-top: -fx--blackcard-background;
+}
+
+.list-cell:selected{
+    -fx-text-fill: -fx--text-color;
+    -fx-background-color: -fx--selected;
+    -fx-border-top: -fx--blackcard-background;
 }
