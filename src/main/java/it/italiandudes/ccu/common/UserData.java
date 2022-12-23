@@ -12,7 +12,7 @@ public final class UserData {
 
     //Connection Data
     @NotNull private final String username;
-    @NotNull private final String serverPassword;
+    private String serverPassword;
     @NotNull private final Socket connection;
 
     //Game Data
@@ -86,6 +86,9 @@ public final class UserData {
     }
     @NotNull public String getServerPassword(){
         return serverPassword;
+    }
+    public void setServerPassword(@NotNull String serverPassword){
+        this.serverPassword = serverPassword;
     }
     @NotNull public Socket getConnection(){
         return connection;
