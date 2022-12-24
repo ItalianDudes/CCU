@@ -49,3 +49,10 @@ task runServer(type: Exec) {
     description = "Run CCU on Server-Mode from the output jar in classpath with ExecTask"
     commandLine "java", "-jar", jar.archiveFile.get(), "-server"
 }
+task testBuild(type: Exec) {
+    dependsOn shadowJar
+    group = "Execution"
+    standardInput = System.in
+    description = "Test Build from the output jar in classpath with ExecTask"
+    commandLine "java", "-jar", jar.archiveFile.get(), "-test"
+}

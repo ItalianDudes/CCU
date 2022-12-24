@@ -7,27 +7,15 @@ import it.italiandudes.idl.common.Logger;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-//@SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public final class CCU {
-
-    //App Common Data
-    public static final class AppData {
-
-        //Attributes
-
-        //Constructors
-        private AppData(){
-            throw new UnsupportedOperationException("Can't be instanced!");
-        }
-
-        //Methods
-
-    }
 
     //Main Method
     public static void main(String[] args) {
 
-        System.out.println(Defs.JAR_POSITION);
+        if(Arrays.stream(args).anyMatch(Predicate.isEqual(Defs.LaunchArgs.TEST_START))){
+            return;
+        }
 
         int exitCode;
 
@@ -89,6 +77,7 @@ public final class CCU {
             public static final String LOG_ON_DEFAULT_STREAM_IF_LOGGER_INIT_FAIL = "-LogOnDefaultStreamIfLoggerInitFail";
             public static final String START_SERVER = "-server";
             public static final String START_TEXTUAL_APP = "-nogui";
+            public static final String TEST_START = "-test";
         }
 
         //Return Codes
@@ -113,8 +102,10 @@ public final class CCU {
                 public static final String PWD_REQUIRED = "needpwd";
                 public static final String PWD_NOT_REQUIRED = "nopwd";
                 public static final String SERVER_FULL = "sfull";
-                public static final String AUTH_ERROR = "autherr";
-                public static final String AUTH_CORRECT = "authok";
+                public static final String PWD_CORRECT = "pwdok";
+                public static final String PWD_INCORRECT = "pwderr";
+                public static final String AUTH_ERROR_SAME_USER_LOGGED = "sameuserlogged";
+                public static final String AUTH_OK = "authok";
             }
             public static final class Lobby {
                 public static final String PLAYER_JOIN = "pjoin";
