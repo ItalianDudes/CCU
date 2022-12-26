@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+@SuppressWarnings("unused")
 public final class Server {
 
     //Attributes
@@ -103,6 +104,8 @@ public final class Server {
 
     //Server Constants
     public static final class ServerDefs {
+
+        public static final int KEEP_ALIVE_MILLIS = 5000; //5 Seconds
 
         //Paths Constants
         public static final class Path {
