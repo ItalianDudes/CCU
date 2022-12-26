@@ -1,7 +1,8 @@
 package it.italiandudes.ccu.client.javafx.controller;
 
-import it.italiandudes.ccu.client.models.ServerSelectionModel;
-import it.italiandudes.ccu.common.annotations.ControllerClass;
+import it.italiandudes.ccu.client.annotations.ControllerClass;
+import it.italiandudes.ccu.client.javafx.JFXDefs;
+import it.italiandudes.ccu.client.models.controllers.ServerSelectionModel;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -12,12 +13,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URL;
 import java.rmi.AlreadyBoundException;
 import java.security.InvalidParameterException;
@@ -25,7 +23,7 @@ import java.util.ResourceBundle;
 
 //TODO: finire di configurare la classe e di inserire la licenza
 @ControllerClass
-public class ServerSelectionController implements Initializable {
+public final class ServerSelectionController implements Initializable {
 
     private ServerSelectionModel model;
 
@@ -42,7 +40,7 @@ public class ServerSelectionController implements Initializable {
 
 
     private static String originalTxtBorderColor;
-    private static final String errorTxtBorderColor = "-fx-border-color: #FF4040";
+
 
     public void doConfirmServer(ActionEvent actionEvent) {
         Service<Void> service = new Service<Void>() {
@@ -62,10 +60,12 @@ public class ServerSelectionController implements Initializable {
 
                         if(requirePwd){
                             System.out.println("Password richiesta");
+                            //TODO: passare direttamente alla schermata di richiesta password
                         }else{
                             System.out.println("Password non richiesta");
+                            //TODO: passare direttamente alla schermata di richiesta nome
                         }
-                    } catch (IOException | ConfigFormatException | AlreadyBoundException | InvalidParameterException | NumberFormatException  e) {
+                    } catch (IOException | AlreadyBoundException | InvalidParameterException | NumberFormatException | ConfigFormatException e) {
                         Platform.runLater(()->{
                             txt_serverName.setStyle(originalTxtBorderColor);
                             txt_serverAlias.setStyle(originalTxtBorderColor);
@@ -83,7 +83,7 @@ public class ServerSelectionController implements Initializable {
                             if(!vb_errorSupplement.isVisible()){
                                 vb_errorSupplement.setVisible(true);
                             }
-                            txt_serverAlias.setStyle(errorTxtBorderColor);
+                            txt_serverAlias.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
                         });
                     }else if(isAlias){
                         Platform.runLater(()->{
@@ -92,7 +92,7 @@ public class ServerSelectionController implements Initializable {
                             if(!vb_errorSupplement.isVisible()){
                                 vb_errorSupplement.setVisible(true);
                             }
-                            txt_serverName.setStyle(errorTxtBorderColor);
+                            txt_serverName.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
                         });
                     }else{
                         Platform.runLater(()->{
@@ -100,8 +100,8 @@ public class ServerSelectionController implements Initializable {
                             if(!vb_errorSupplement.isVisible()){
                                 vb_errorSupplement.setVisible(true);
                             }
-                            txt_serverName.setStyle(errorTxtBorderColor);
-                            txt_serverAlias.setStyle(errorTxtBorderColor);
+                            txt_serverName.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
+                            txt_serverAlias.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
                         });
                     }
                 }

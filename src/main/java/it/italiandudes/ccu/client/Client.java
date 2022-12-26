@@ -2,7 +2,9 @@ package it.italiandudes.ccu.client;
 
 import it.italiandudes.ccu.client.javafx.JFXDefs;
 import it.italiandudes.ccu.client.javafx.controller.ServerSelectionController;
-import it.italiandudes.ccu.client.models.ServerSelectionModel;
+import it.italiandudes.ccu.client.javafx.controller.ServerSelectionListController;
+import it.italiandudes.ccu.client.models.controllers.ServerSelectionListModel;
+import it.italiandudes.ccu.client.models.controllers.ServerSelectionModel;
 import it.italiandudes.idl.common.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -38,8 +40,9 @@ public final class Client extends Application {
 
             Scene scene = new Scene(root);
 
-            ServerSelectionController controller = loader.getController();
-            controller.setModel(new ServerSelectionModel());
+            ServerSelectionListController controller = loader.getController();
+            System.out.println("Controller: "+controller);
+            controller.setModel(new ServerSelectionListModel());
 
             stage.setScene(scene);
             stage.setTitle(JFXDefs.AppAssets.APP_TITLE);

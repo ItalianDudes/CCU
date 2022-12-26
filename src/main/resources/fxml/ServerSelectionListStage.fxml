@@ -9,22 +9,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="stageBackground" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="stageBackground" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.ccu.client.javafx.controller.ServerSelectionListController">
    <center>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <ListView prefHeight="200.0" prefWidth="200.0" styleClass="list" stylesheets="@../style.css" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="lv_serversList" prefHeight="200.0" prefWidth="200.0" styleClass="list" stylesheets="@../style.css" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER" prefHeight="100.0" spacing="50.0">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="+" />
-                  <Button mnemonicParsing="false" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="-" />
-                  <Button mnemonicParsing="false" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="Conferma" />
+                  <Button fx:id="btn_addServer" mnemonicParsing="false" onAction="#doAddServer" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="+" />
+                  <Button fx:id="btn_deleteServer" mnemonicParsing="false" onAction="#doDeleteServer" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="-" />
+                  <Button fx:id="btn_confirm" mnemonicParsing="false" onAction="#doConfirm" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="Conferma" />
                </children>
             </HBox>
-            <VBox visible="false">
+            <VBox fx:id="vb_errorMessage" visible="false">
                <children>
-                  <Label maxWidth="1.7976931348623157E308" styleClass="error-label" stylesheets="@../style.css" text="Label" wrapText="true">
+                  <Label fx:id="lb_errorMessage" maxWidth="1.7976931348623157E308" styleClass="error-label" stylesheets="@../style.css" text="Label" wrapText="true">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

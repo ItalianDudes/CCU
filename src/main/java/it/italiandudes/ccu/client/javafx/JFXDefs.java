@@ -28,4 +28,14 @@ public class JFXDefs {
         public static final String GIF_LOADING = GIF_DIRECTORY+"loading.gif";
     }
 
+    public static final class StylesDefs {
+        public static final class Colors {
+            public static final String NOT_CLICKABLE = "#777777";
+            public static final String TEXT_COLOR = "#999999";
+            public static final String ERROR_COLOR = "#FF4040";
+        }
+        public static final String ERROR_TXT_BORDER_COLOR = "-fx-border-color: "+Colors.ERROR_COLOR+";";
+        public static final String BTN_OFF = "-fx-background-color: "+Colors.NOT_CLICKABLE+";\n" +
+                                         "    -fx-text-fill: "+Colors.TEXT_COLOR+";";
+    }
 }

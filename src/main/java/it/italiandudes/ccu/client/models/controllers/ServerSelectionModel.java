@@ -1,11 +1,12 @@
-package it.italiandudes.ccu.client.models;
+package it.italiandudes.ccu.client.models.controllers;
 
 import it.italiandudes.ccu.CCU;
 import it.italiandudes.ccu.client.Client;
 import it.italiandudes.ccu.client.ClientSingleton;
+import it.italiandudes.ccu.client.annotations.LogicalClass;
+import it.italiandudes.ccu.client.annotations.LogicalOperation;
+import it.italiandudes.ccu.client.models.Server;
 import it.italiandudes.ccu.common.UserData;
-import it.italiandudes.ccu.common.annotations.LogicalClass;
-import it.italiandudes.ccu.common.annotations.LogicalOperation;
 import it.italiandudes.idl.common.RawSerializer;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,7 @@ import java.security.InvalidParameterException;
 public final class ServerSelectionModel {
 
     @LogicalOperation
-    public boolean confirm(@NotNull String serverName,@NotNull String alias) throws IOException, ConfigFormatException, AlreadyBoundException {
+    public boolean confirm(@NotNull String serverName,@NotNull String alias) throws IOException, AlreadyBoundException, ConfigFormatException {
         int type;
         if((type = hostNameValidation(serverName))>=0){
 
@@ -42,8 +43,7 @@ public final class ServerSelectionModel {
                 ClientSingleton.getInstance().setUser(new UserData("","",address,port));
             }
 
-            String server = "("+alias+","+serverName+",)";
-            ClientSingleton.getInstance().addServer(server);
+            ClientSingleton.getInstance().addServer(new Server(alias,serverName,""));
 
             String isPwdRequired = RawSerializer.receiveString(ClientSingleton.getInstance().getUser().getConnection().getInputStream());
             if(isPwdRequired.equals(CCU.Defs.Protocol.Login.PWD_NOT_REQUIRED)){
@@ -106,8 +106,9 @@ public final class ServerSelectionModel {
         return -1;
     }
 
-    private boolean isAliasAlreadyTaken(String alias) throws ConfigFormatException {
+    private boolean isAliasAlreadyTaken(String alias) throws IOException, ConfigFormatException {
         String[] serverAliases;
+        //TODO: richiesta di chiudere il programma per ricaricare il config.cfg in caso di getProperty() == null
         if(ClientSingleton.getInstance().getProperty(Client.Defs.Config.SERVERS_KEYWORD).getValue()==null){
             return false;
         }else{
