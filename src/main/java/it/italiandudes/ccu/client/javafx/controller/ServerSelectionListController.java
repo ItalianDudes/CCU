@@ -1,8 +1,10 @@
 package it.italiandudes.ccu.client.javafx.controller;
 
+import it.italiandudes.ccu.client.Client;
 import it.italiandudes.ccu.client.ClientSingleton;
 import it.italiandudes.ccu.client.annotations.ControllerClass;
 import it.italiandudes.ccu.client.javafx.JFXDefs;
+import it.italiandudes.ccu.client.javafx.scene.SceneLoading;
 import it.italiandudes.ccu.client.models.controllers.ServerSelectionListModel;
 import it.italiandudes.ccu.client.models.controllers.ServerSelectionModel;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
@@ -49,9 +51,9 @@ public final class ServerSelectionListController implements Initializable {
     private static String originalBtnStyle;
 
     public void doAddServer(ActionEvent actionEvent) {
+        Client.getStage().setScene(SceneLoading.getScene());
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.SCENE_STARTUP_1));
-            Stage stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
@@ -59,10 +61,7 @@ public final class ServerSelectionListController implements Initializable {
             ServerSelectionController controller = loader.getController();
             controller.setModel(new ServerSelectionModel());
 
-            stage.setScene(scene);
-            stage.setTitle(JFXDefs.AppAssets.APP_TITLE);
-            stage.getIcons().add(JFXDefs.AppAssets.APP_ICON);
-            stage.show();
+            Client.getStage().setScene(scene);
         } catch (IOException e) {
             lb_errorMessage.setText(e.getMessage());
             if(!vb_errorMessage.isVisible()){
@@ -77,9 +76,9 @@ public final class ServerSelectionListController implements Initializable {
                 ClientSingleton.getInstance().deleteServer(ClientSingleton.getInstance().getServer(selectedServerIndex));
 
                 if(ClientSingleton.getInstance().isServerEmpty()){
+                    Client.getStage().setScene(SceneLoading.getScene());
                     //Since no server is saved, I automatically launch the scene to make you add a server.
                     FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.SCENE_STARTUP_1));
-                    Stage stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
                     Parent root = loader.load();
 
                     Scene scene = new Scene(root);
@@ -87,16 +86,10 @@ public final class ServerSelectionListController implements Initializable {
                     ServerSelectionController controller = loader.getController();
                     controller.setModel(new ServerSelectionModel());
 
-                    stage.setScene(scene);
-                    stage.setTitle(JFXDefs.AppAssets.APP_TITLE);
-                    stage.getIcons().add(JFXDefs.AppAssets.APP_ICON);
-                    stage.show();
+                    Client.getStage().setScene(scene);
                 }else{
                     //I reload the list view with the updated servers' list.
-                    for(int i=0; i<ClientSingleton.getInstance().getServersNum(); i++){
-                        System.out.println("Inside first cycle ("+i+")");
-                        lv_serversList.getItems().add(ClientSingleton.getInstance().getServer(i).getAlias());
-                    }
+                    lv_serversList.getItems().remove(selectedServerIndex);
                 }
             }
         } catch (IOException | ConfigFormatException e) {

@@ -43,72 +43,65 @@ public final class ServerSelectionController implements Initializable {
 
 
     public void doConfirmServer(ActionEvent actionEvent) {
-        Service<Void> service = new Service<Void>() {
-            @Override
-            protected Task<Void> createTask() {
-                String serverName = txt_serverName.getText();
-                boolean isServerName, isAlias;
-                isServerName= serverName != null && !serverName.isEmpty();
+            String serverName = txt_serverName.getText();
+            boolean isServerName, isAlias;
+            isServerName= serverName != null && !serverName.isEmpty();
 
-                String alias = txt_serverAlias.getText();
-                isAlias= alias != null && !alias.isEmpty();
+            String alias = txt_serverAlias.getText();
+            isAlias= alias != null && !alias.isEmpty();
 
-                if(isServerName && isAlias){
-                    try {
-                        boolean requirePwd;
-                        requirePwd=model.confirm(serverName,alias);
+            if(isServerName && isAlias){
+                try {
+                    boolean requirePwd;
+                    requirePwd=model.confirm(serverName,alias);
 
-                        if(requirePwd){
-                            System.out.println("Password richiesta");
-                            //TODO: passare direttamente alla schermata di richiesta password
-                        }else{
-                            System.out.println("Password non richiesta");
-                            //TODO: passare direttamente alla schermata di richiesta nome
-                        }
-                    } catch (IOException | AlreadyBoundException | InvalidParameterException | NumberFormatException | ConfigFormatException e) {
-                        Platform.runLater(()->{
-                            txt_serverName.setStyle(originalTxtBorderColor);
-                            txt_serverAlias.setStyle(originalTxtBorderColor);
-                            lab_errorSupplement.setText(e.getMessage());
-                            if(!vb_errorSupplement.isVisible()){
-                                vb_errorSupplement.setVisible(true);
-                            }
-                        });
-                    }
-                }else{
-                    if(isServerName){
-                        Platform.runLater(()->{
-                            txt_serverName.setStyle(originalTxtBorderColor);
-                            lab_errorSupplement.setText("Alias is empty");
-                            if(!vb_errorSupplement.isVisible()){
-                                vb_errorSupplement.setVisible(true);
-                            }
-                            txt_serverAlias.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
-                        });
-                    }else if(isAlias){
-                        Platform.runLater(()->{
-                            txt_serverAlias.setStyle(originalTxtBorderColor);
-                            lab_errorSupplement.setText("Server is empty");
-                            if(!vb_errorSupplement.isVisible()){
-                                vb_errorSupplement.setVisible(true);
-                            }
-                            txt_serverName.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
-                        });
+                    if(requirePwd){
+                        System.out.println("Password richiesta");
+                        //TODO: passare direttamente alla schermata di richiesta password
                     }else{
-                        Platform.runLater(()->{
-                            lab_errorSupplement.setText("Both Alias and Server are empty");
-                            if(!vb_errorSupplement.isVisible()){
-                                vb_errorSupplement.setVisible(true);
-                            }
-                            txt_serverName.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
-                            txt_serverAlias.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
-                        });
+                        System.out.println("Password non richiesta");
+                        //TODO: passare direttamente alla schermata di richiesta nome
                     }
+                } catch (IOException | AlreadyBoundException | InvalidParameterException | NumberFormatException | ConfigFormatException e) {
+                    Platform.runLater(()->{
+                        txt_serverName.setStyle(originalTxtBorderColor);
+                        txt_serverAlias.setStyle(originalTxtBorderColor);
+                        lab_errorSupplement.setText(e.getMessage());
+                        if(!vb_errorSupplement.isVisible()){
+                            vb_errorSupplement.setVisible(true);
+                        }
+                    });
                 }
-                return null;
+            }else{
+                if(isServerName){
+                    Platform.runLater(()->{
+                        txt_serverName.setStyle(originalTxtBorderColor);
+                        lab_errorSupplement.setText("Alias is empty");
+                        if(!vb_errorSupplement.isVisible()){
+                            vb_errorSupplement.setVisible(true);
+                        }
+                        txt_serverAlias.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
+                    });
+                }else if(isAlias){
+                    Platform.runLater(()->{
+                        txt_serverAlias.setStyle(originalTxtBorderColor);
+                        lab_errorSupplement.setText("Server is empty");
+                        if(!vb_errorSupplement.isVisible()){
+                            vb_errorSupplement.setVisible(true);
+                        }
+                        txt_serverName.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
+                    });
+                }else{
+                    Platform.runLater(()->{
+                        lab_errorSupplement.setText("Both Alias and Server are empty");
+                        if(!vb_errorSupplement.isVisible()){
+                            vb_errorSupplement.setVisible(true);
+                        }
+                        txt_serverName.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
+                        txt_serverAlias.setStyle(JFXDefs.StylesDefs.ERROR_TXT_BORDER_COLOR);
+                    });
+                }
             }
-        };
-        service.start();
     }
 
     public void setModel(ServerSelectionModel model){

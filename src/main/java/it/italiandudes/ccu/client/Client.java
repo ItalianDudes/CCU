@@ -14,10 +14,14 @@ import javafx.stage.Stage;
 
 public final class Client extends Application {
 
+    //Stage
+    private static Stage stage;
+
     //Graphic Start
     @Override
     public void start(Stage stage) throws Exception {
         ClientSingleton.getInstance().loadProperties();
+        Client.stage = stage;
 
         if(ClientSingleton.getInstance().isServerEmpty()){
             FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.SCENE_STARTUP_1));
@@ -51,6 +55,11 @@ public final class Client extends Application {
         }
     }
 
+    //Get Stage Method
+    public static Stage getStage(){
+        return stage;
+    }
+
     //Start Methods
     public static int start(String[] args){
         launch(args);
@@ -61,6 +70,7 @@ public final class Client extends Application {
         return 0;
     }
 
+    //Constants
     public static final class Defs{
         public static final class Path {
             public static final String CLIENT_DIR = "client/";
