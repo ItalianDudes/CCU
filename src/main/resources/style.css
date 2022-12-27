@@ -74,3 +74,13 @@
     -fx-border-color: transparent;
     -fx-background-radius: 0em;
 }
+
+/*Checkbox's customization*/
+.check-box .box {
+    -fx-background-color: -fx--special-background;
+    -fx-text-fill: -fx--text-color;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: -fx--text-color;
+}

@@ -10,7 +10,9 @@ import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @LogicalClass
 public final class ClientSingleton {

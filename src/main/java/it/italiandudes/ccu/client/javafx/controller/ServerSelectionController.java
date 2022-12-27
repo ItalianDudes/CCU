@@ -5,8 +5,6 @@ import it.italiandudes.ccu.client.javafx.JFXDefs;
 import it.italiandudes.ccu.client.models.controllers.ServerSelectionModel;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import javafx.application.Platform;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

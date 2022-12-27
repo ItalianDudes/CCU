@@ -9,23 +9,21 @@ import it.italiandudes.ccu.client.models.controllers.ServerSelectionListModel;
 import it.italiandudes.ccu.client.models.controllers.ServerSelectionModel;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import javafx.application.Platform;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.AlreadyBoundException;
+import java.security.InvalidParameterException;
 import java.util.ResourceBundle;
 
 @ControllerClass
@@ -101,6 +99,29 @@ public final class ServerSelectionListController implements Initializable {
     }
 
     public void doConfirm(ActionEvent actionEvent) {
+        if(selectedServerIndex>=0){
+            try {
+                boolean requirePwd;
+                requirePwd = model.confirm(ClientSingleton.getInstance().getServer(selectedServerIndex).getCname(),
+                        ClientSingleton.getInstance().getServer(selectedServerIndex).getAlias());
+
+                if (requirePwd) {
+                    System.out.println("Password richiesta");
+                    //TODO: passare direttamente alla schermata di richiesta password
+                } else {
+                    System.out.println("Password non richiesta");
+                    //TODO: passare direttamente alla schermata di richiesta nome
+                }
+            } catch (IOException | AlreadyBoundException | InvalidParameterException | NumberFormatException |
+                     ConfigFormatException e) {
+                Platform.runLater(() -> {
+                    lb_errorMessage.setText(e.getMessage());
+                    if (!vb_errorMessage.isVisible()) {
+                        vb_errorMessage.setVisible(true);
+                    }
+                });
+            }
+        }
     }
 
     public void setModel(ServerSelectionListModel model){

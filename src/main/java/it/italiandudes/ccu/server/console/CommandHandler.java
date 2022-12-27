@@ -1,8 +1,8 @@
 package it.italiandudes.ccu.server.console;
 
+import it.italiandudes.ccu.server.Server.ServerDefs.Command;
 import it.italiandudes.idl.common.Logger;
 import it.italiandudes.idl.common.StringHandler;
-import it.italiandudes.ccu.server.Server.ServerDefs.Command;
 
 public final class CommandHandler {
 
