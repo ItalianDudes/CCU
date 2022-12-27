@@ -2,12 +2,14 @@ package it.italiandudes.ccu.client.config;
 
 import it.italiandudes.ccu.client.annotations.LogicalClass;
 import it.italiandudes.ccu.client.annotations.LogicalOperation;
+import it.italiandudes.ccu.server.Server;
 import it.italiandudes.idl.common.Property;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @LogicalClass
 public final class ClientConfigHandler {
@@ -48,5 +50,14 @@ public final class ClientConfigHandler {
 
             return properties;
         }
+    }
+    //TODO: finire metodi
+    @LogicalOperation
+    public static void writeConfigs(@NotNull String path, @NotNull HashMap<String,String> properties, @NotNull ArrayList<Server> servers){
+
+    }
+    @LogicalOperation
+    public static void writeConfigs(@NotNull File configFile, @NotNull HashMap<String,String> properties,@NotNull ArrayList<Server> servers){
+
     }
 }

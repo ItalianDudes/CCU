@@ -29,4 +29,14 @@ public class Server {
     public String getPwd(){
         return pwd;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Server){
+            Server server = (Server) obj;
+
+            return (server.alias.equals(alias) && server.cname.equals(cname));
+        }
+        return false;
+    }
 }

@@ -18,7 +18,7 @@
                <children>
                   <Button fx:id="btn_addServer" mnemonicParsing="false" onAction="#doAddServer" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="+" />
                   <Button fx:id="btn_deleteServer" mnemonicParsing="false" onAction="#doDeleteServer" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="-" />
-                  <Button fx:id="btn_confirm" mnemonicParsing="false" onAction="#doConfirm" prefWidth="70.0" styleClass="btnOn" stylesheets="@../style.css" text="Conferma" />
+                  <Button fx:id="btn_confirm" mnemonicParsing="false" onAction="#doConfirm" styleClass="btnOn" stylesheets="@../style.css" text="Conferma" />
                </children>
             </HBox>
             <VBox fx:id="vb_errorMessage" visible="false">

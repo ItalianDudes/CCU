@@ -57,7 +57,7 @@ public final class ClientSingleton {
                     temp_server = temp_server.replaceAll("\\(","").trim();
                     String alias = temp_server.split(",")[0].trim();
                     String cname = temp_server.split(",")[1].trim();
-                    String pwd = temp_server.split(",")[2] == null? "" : temp_server.split(",")[2];
+                    String pwd = temp_server.split(",").length<3 ? "" : temp_server.split(",")[2];
 
                     this.addServer(new Server(alias,cname,pwd));
                 }

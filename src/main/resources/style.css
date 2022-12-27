@@ -37,6 +37,7 @@
     -fx-text-fill: -fx--error-text;
 }
 
+/*List and list's cells customization*/
 .list {
     -fx-background-color: -fx--special-background;
 }
@@ -51,4 +52,25 @@
     -fx-text-fill: -fx--text-color;
     -fx-background-color: -fx--selected;
     -fx-border-top: -fx--blackcard-background;
+}
+
+/*List scrollbars' customization*/
+.list .scroll-bar:vertical, .list .scroll-bar:horizontal {
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.list .scroll-bar:vertical .thumb, .list .scroll-bar:horizontal .thumb {
+    -fx-background-color: -fx--text-color;
+    -fx-background-radius: 5em;
+}
+
+.list .scroll-bar:vertical .track, .list .scroll-bar:horizontal .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
 }
