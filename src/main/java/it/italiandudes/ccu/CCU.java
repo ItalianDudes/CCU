@@ -112,6 +112,18 @@ public final class CCU {
                 public static final String PLAYER_QUIT = "pquit";
                 public static final String GAME_START = "gstart";
             }
+            public static final class Game {
+                public static final class Role {
+                    public static final String PLAYER = "player";
+                    public static final String MASTER = "master";
+                }
+                public static final class Phase {
+                    public static final String ELECTING_CARD_MASTER = "emaster";
+                    public static final String PREPARING_DECK = "prepdeck";
+                    public static final String SENDING_ROLES = "sroles";
+                    public static final String SEND_BLACK_CARD = "sblackards";
+                }
+            }
             public static final String DISCONNECT = "disc";
         }
 

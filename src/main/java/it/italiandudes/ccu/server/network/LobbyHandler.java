@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 
 public final class LobbyHandler {
 
@@ -36,6 +37,12 @@ public final class LobbyHandler {
         }
         return users;
     }
+    public static HashSet<NetUserData> getNetUserData(){
+        return userList;
+    }
+    public static int getUsersConnectedCount(){
+        return userList.size();
+    }
     public static boolean removeUserFromLobby(@NotNull String username){
         for(NetUserData netUserData : userList){
             if(netUserData.getUserData().getUsername().equals(username)){
@@ -51,14 +58,29 @@ public final class LobbyHandler {
         }
         return false;
     }
-    public static void broadcastMessage(@NotNull String message){
+    public static int broadcastMessage(@NotNull String message){
+        int removedUsers = 0;
         for(NetUserData netUserData : userList){
             try {
-                StringHandler.sendString(netUserData.getUserData().getConnection().getOutputStream(), message);
+                RawSerializer.sendString(netUserData.getUserData().getConnection().getOutputStream(), message);
             }catch (IOException e){
                 removeUserFromLobby(netUserData.getUserData().getUsername());
+                removedUsers++;
             }
         }
+        return removedUsers;
+    }
+    public static int broadcastObject(@NotNull Object obj){
+        int removedUsers = 0;
+        for(NetUserData netUserData : userList){
+            try{
+                RawSerializer.sendObject(netUserData.getUserData().getConnection().getOutputStream(), obj);
+            }catch (IOException e){
+                removeUserFromLobby(netUserData.getUserData().getUsername());
+                removedUsers++;
+            }
+        }
+        return removedUsers;
     }
     public static boolean isConnected(@NotNull String username){
         for(NetUserData netUserData : userList){
