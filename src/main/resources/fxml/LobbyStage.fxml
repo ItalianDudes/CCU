@@ -19,7 +19,7 @@
             <HBox prefWidth="200.0" VBox.vgrow="NEVER">
                <children>
                   <Region maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="243.0" HBox.hgrow="ALWAYS" />
-                  <ToggleButton fx:id="tbtn_ready" mnemonicParsing="false" onAction="#changeReadyStatus" styleClass="btnOn" stylesheets="@../style.css" text="Pronto" />
+                  <ToggleButton fx:id="btn_ready" mnemonicParsing="false" onAction="#changeReadyStatus" styleClass="btnOn" stylesheets="@../style.css" text="Pronto" />
                   <Region maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="240.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>

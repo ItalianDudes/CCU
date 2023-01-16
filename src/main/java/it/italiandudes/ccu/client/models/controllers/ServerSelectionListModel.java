@@ -57,6 +57,7 @@ public final class ServerSelectionListModel {
         String answer = RawSerializer.receiveString(ClientSingleton.getInstance().getUser().getConnection().getInputStream());
 
         if(answer!=null && answer.equals(CCU.Defs.Protocol.Login.PWD_CORRECT)){
+            ClientSingleton.getInstance().getUser().setServerPassword(insertedPwd);
             return true;
         }else if(answer!=null && answer.equals(CCU.Defs.Protocol.Login.PWD_INCORRECT)){
             return false;
@@ -71,6 +72,7 @@ public final class ServerSelectionListModel {
         String answer = RawSerializer.receiveString(ClientSingleton.getInstance().getUser().getConnection().getInputStream());
 
         if(answer!=null && answer.equals(CCU.Defs.Protocol.Login.AUTH_OK)){
+            ClientSingleton.getInstance().getUser().setUsername(insertedName);
             return true;
         }else if(answer!=null && answer.equals(CCU.Defs.Protocol.Login.AUTH_ERROR_SAME_USER_LOGGED)){
             throw new UsernameAlreadyBoundException("The username is already present in the server");
