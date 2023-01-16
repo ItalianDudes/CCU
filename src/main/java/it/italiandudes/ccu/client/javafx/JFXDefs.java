@@ -20,6 +20,7 @@ public class JFXDefs {
         private static final String FXML_DIRECTORY = "/fxml/";
         public static final String SCENE_STARTUP_1 = FXML_DIRECTORY +"ServerSelectionStage.fxml";
         public static final String SCENE_STARTUP_2 = FXML_DIRECTORY+"ServerSelectionListStage.fxml";
+        public static final String LOBBY_SCENE = FXML_DIRECTORY+"LobbyStage.fxml";
         public static final String SCENE_LOADING = FXML_DIRECTORY +"SceneLoading.fxml";
     }
 
@@ -37,5 +38,10 @@ public class JFXDefs {
         public static final String ERROR_TXT_BORDER_COLOR = "-fx-border-color: "+Colors.ERROR_COLOR+";";
         public static final String BTN_OFF = "-fx-background-color: "+Colors.NOT_CLICKABLE+";\n" +
                                          "    -fx-text-fill: "+Colors.TEXT_COLOR+";";
+    }
+
+    public static final class IdDefs {
+        private static final String PREFIX = "#";
+        public static final String REQUEST_CHKBOX = PREFIX+"chbx_save";
     }
 }

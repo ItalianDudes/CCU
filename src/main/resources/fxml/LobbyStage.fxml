@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="stageBackground" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.ccu.client.javafx.controller.LobbyController">
+   <center>
+      <VBox alignment="CENTER" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="lv_players" maxWidth="-Infinity" prefHeight="269.0" prefWidth="491.0" styleClass="list" stylesheets="@../style.css" VBox.vgrow="ALWAYS" />
+            <HBox prefWidth="200.0" VBox.vgrow="NEVER">
+               <children>
+                  <Region maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="243.0" HBox.hgrow="ALWAYS" />
+                  <ToggleButton fx:id="tbtn_ready" mnemonicParsing="false" onAction="#changeReadyStatus" styleClass="btnOn" stylesheets="@../style.css" text="Pronto" />
+                  <Region maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="240.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+   <top>
+      <HBox prefHeight="18.0" prefWidth="474.0" BorderPane.alignment="CENTER">
+         <children>
+            <Region maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="223.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="lb_score" maxWidth="-Infinity" prefHeight="18.0" prefWidth="346.0" styleClass="labelColor" stylesheets="@../style.css" text="Punteggio:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lb_timer" maxWidth="-Infinity" prefHeight="18.0" prefWidth="329.0" styleClass="labelColor" stylesheets="@../style.css" text="Tempo:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Region maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="226.0" HBox.hgrow="ALWAYS" />
+         </children>
+         <BorderPane.margin>
+            <Insets left="40.0" right="40.0" top="10.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+</BorderPane>

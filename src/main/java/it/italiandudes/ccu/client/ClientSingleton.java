@@ -34,6 +34,7 @@ public final class ClientSingleton {
     private Map<String, String> properties;
     private ArrayList<Server> servers;
     private UserData user;
+    private Server selectedServer;
 
     //Common Client's methods
     public UserData getUser(){
@@ -78,10 +79,16 @@ public final class ClientSingleton {
         return null;    //The specified property doesn't exist. The config file has probably been corrupted and needs to be reloaded.
     }
     @LogicalOperation
+    public void modifyProperty(@NotNull String keyword, @NotNull String value){
+        if(properties.containsKey(keyword)){
+            properties.put(keyword,value);
+        }
+    }
+    @LogicalOperation
     public void addServer(@NotNull Server server) {
         servers.remove(new Server(server.getAlias(),server.getCname(),""));         //deletes every possible copy
         servers.remove(server);
-        servers.add(new Server(server.getAlias(),server.getCname(),server.getPwd()));    //adds or updates the HashSet
+        servers.add(new Server(server.getAlias(),server.getCname(),server.getPwd()));    //adds or updates the ArrayList
     }
     @LogicalOperation
     public void deleteServer(@NotNull Server server) throws IOException, ConfigFormatException {
@@ -115,5 +122,13 @@ public final class ClientSingleton {
     @LogicalOperation
     public boolean isServerEmpty(){
         return servers == null || servers.isEmpty();
+    }
+    @LogicalOperation
+    public Server getSelectedServer(){
+        return selectedServer;
+    }
+    @LogicalOperation
+    public void setSelectedServer(Server selectedServer){
+        this.selectedServer=selectedServer;
     }
 }

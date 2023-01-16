@@ -3,27 +3,32 @@ package it.italiandudes.ccu.client.javafx.controller;
 import it.italiandudes.ccu.client.Client;
 import it.italiandudes.ccu.client.ClientSingleton;
 import it.italiandudes.ccu.client.annotations.ControllerClass;
+import it.italiandudes.ccu.client.exception.UsernameAlreadyBoundException;
 import it.italiandudes.ccu.client.javafx.JFXDefs;
+import it.italiandudes.ccu.client.javafx.controller.dialogs.NameDialog;
+import it.italiandudes.ccu.client.javafx.controller.dialogs.PasswordDialog;
 import it.italiandudes.ccu.client.javafx.scene.SceneLoading;
+import it.italiandudes.ccu.client.models.controllers.LobbyModel;
 import it.italiandudes.ccu.client.models.controllers.ServerSelectionListModel;
 import it.italiandudes.ccu.client.models.controllers.ServerSelectionModel;
 import it.italiandudes.idl.common.exceptions.IO.file.ConfigFormatException;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.AlreadyBoundException;
 import java.security.InvalidParameterException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @ControllerClass
@@ -47,6 +52,8 @@ public final class ServerSelectionListController implements Initializable {
     private int selectedServerIndex;
 
     private static String originalBtnStyle;
+    private static boolean savePwd;
+    private static boolean saveName;
 
     public void doAddServer(ActionEvent actionEvent) {
         Client.getStage().setScene(SceneLoading.getScene());
@@ -99,29 +106,168 @@ public final class ServerSelectionListController implements Initializable {
     }
 
     public void doConfirm(ActionEvent actionEvent) {
-        if(selectedServerIndex>=0){
-            try {
-                boolean requirePwd;
-                requirePwd = model.confirm(ClientSingleton.getInstance().getServer(selectedServerIndex).getCname(),
-                        ClientSingleton.getInstance().getServer(selectedServerIndex).getAlias());
+        Service<Void> confirmService = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        if(selectedServerIndex>=0){
+                            try {
+                                boolean isNameOk=false;
+                                boolean requirePwd;
+                                requirePwd = model.confirm(ClientSingleton.getInstance().getServer(selectedServerIndex).getCname(),
+                                        ClientSingleton.getInstance().getServer(selectedServerIndex).getAlias());
+                                ClientSingleton.getInstance().setSelectedServer(ClientSingleton.getInstance().getServer(selectedServerIndex));
 
-                if (requirePwd) {
-                    System.out.println("Password richiesta");
-                    //TODO: passare direttamente alla schermata di richiesta password
-                } else {
-                    System.out.println("Password non richiesta");
-                    //TODO: passare direttamente alla schermata di richiesta nome
-                }
-            } catch (IOException | AlreadyBoundException | InvalidParameterException | NumberFormatException |
-                     ConfigFormatException e) {
-                Platform.runLater(() -> {
-                    lb_errorMessage.setText(e.getMessage());
-                    if (!vb_errorMessage.isVisible()) {
-                        vb_errorMessage.setVisible(true);
+                                if (requirePwd) {
+                                    System.out.println("Password richiesta");
+                                    /*The password dialog is launched and, after the correct password has been typed, the name dialog is launched. At any time
+                                    the process can be altered.*/
+                                    PasswordDialog pwdDialog = new PasswordDialog();
+                                    savePwd=false;
+                                    Platform.runLater(()->{
+                                        pwdDialog.setResizable(false);
+                                        pwdDialog.getDialogPane().lookup(JFXDefs.IdDefs.REQUEST_CHKBOX).addEventFilter(
+                                                ActionEvent.ACTION, event -> savePwd = ((CheckBox) event.getSource()).selectedProperty().get());
+                                    });
+                                    boolean isPwdOk = false;
+                                    boolean cancel = false;
+                                    while(!isPwdOk && !cancel){
+                                        try{
+                                            Optional<ButtonType> result = pwdDialog.showAndWait();
+                                            if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                String pwd = pwdDialog.getPwd();
+                                                if(savePwd){
+                                                    model.savePwd(pwd);
+                                                }
+                                                isPwdOk=model.pwdValidation(pwd);
+
+                                                if(isPwdOk){
+                                                    System.out.println("Correct password");
+                                                }else{
+                                                    System.out.println("Wrong password");
+                                                }
+                                            }else if(result.isPresent() && result.get() == ButtonType.CANCEL){
+                                                cancel=true;
+                                            }
+                                        }catch(IOException e){
+                                            Platform.runLater(()->pwdDialog.setErrorLabel(e.getMessage()));
+                                        }
+                                    }
+
+                                    if(!cancel){
+                                        NameDialog nameDialog = new NameDialog();
+                                        saveName=false;
+                                        Platform.runLater(()->{
+                                            nameDialog.setResizable(false);
+                                            nameDialog.getDialogPane().lookup(JFXDefs.IdDefs.REQUEST_CHKBOX).addEventFilter(
+                                                    ActionEvent.ACTION, event -> {
+                                                        saveName = ((CheckBox) event.getSource()).selectedProperty().get();
+                                                    });
+                                        });
+                                        while(!isNameOk && !cancel){
+                                            try{
+                                                Optional<ButtonType> result = nameDialog.showAndWait();
+                                                if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                    String name = nameDialog.getName();
+                                                    if(saveName){
+                                                        model.saveName(name);
+                                                    }
+                                                    isNameOk=model.nameValidation(name);
+
+                                                    if(isNameOk){
+                                                        System.out.println("Name accepted");
+                                                    }else{
+                                                        System.out.println("Name not accepted");
+                                                    }
+                                                }else if(result.isPresent() && result.get() == ButtonType.CANCEL){
+                                                    cancel=true;
+                                                }
+                                            }catch(IOException | UsernameAlreadyBoundException e){
+                                                Platform.runLater(()->nameDialog.setErrorLabel(e.getMessage()));
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    System.out.println("Password non richiesta");
+                                    NameDialog nameDialog = new NameDialog();
+                                    boolean cancel=false;
+                                    saveName=false;
+                                    Platform.runLater(()->{
+                                        nameDialog.setResizable(false);
+                                        nameDialog.getDialogPane().lookup(JFXDefs.IdDefs.REQUEST_CHKBOX).addEventFilter(
+                                                ActionEvent.ACTION, event -> {
+                                                    saveName = ((CheckBox) event.getSource()).selectedProperty().get();
+                                                });
+                                    });
+                                    while(!isNameOk && !cancel){
+                                        try{
+                                            Optional<ButtonType> result = nameDialog.showAndWait();
+                                            if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                String name = nameDialog.getName();
+                                                if(saveName){
+                                                    model.saveName(name);
+                                                }
+                                                isNameOk=model.nameValidation(name);
+
+                                                if(isNameOk){
+                                                    System.out.println("Name accepted");
+                                                }else{
+                                                    System.out.println("Name not accepted");
+                                                }
+                                            }else if(result.isPresent() && result.get() == ButtonType.CANCEL){
+                                                cancel=true;
+                                            }
+                                        }catch(IOException | UsernameAlreadyBoundException e){
+                                            Platform.runLater(()->nameDialog.setErrorLabel(e.getMessage()));
+                                        }
+                                    }
+                                }
+
+                                if(isNameOk){
+                                    Platform.runLater(()->{
+                                        try{
+                                            /*Init Lobby Stage launch*/
+                                            FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.LOBBY_SCENE));
+
+                                            Parent root = loader.load();
+
+                                            Scene scene = new Scene(root);
+
+                                            LobbyController controller = loader.getController();
+                                            controller.setModel(new LobbyModel());
+
+                                            Client.getStage().setScene(scene);
+                                            Client.getStage().setTitle(JFXDefs.AppAssets.APP_TITLE);
+                                            Client.getStage().getIcons().add(JFXDefs.AppAssets.APP_ICON);
+                                            Client.getStage().show();
+                                        } catch (IOException e) {
+                                            Platform.runLater(()->{
+                                                lb_errorMessage.setText(e.getMessage());
+                                                if(!vb_errorMessage.isVisible()){
+                                                    vb_errorMessage.setVisible(true);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            } catch (IOException | AlreadyBoundException | InvalidParameterException | NumberFormatException |
+                                     ConfigFormatException e) {
+                                Platform.runLater(() -> {
+                                    lb_errorMessage.setText(e.getMessage());
+                                    if (!vb_errorMessage.isVisible()) {
+                                        vb_errorMessage.setVisible(true);
+                                    }
+                                });
+                            }
+                        }
+                        return null;
                     }
-                });
+                };
             }
-        }
+        };
+        confirmService.start();
     }
 
     public void setModel(ServerSelectionListModel model){

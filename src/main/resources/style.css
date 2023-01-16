@@ -84,3 +84,9 @@
 .check-box:selected .mark {
     -fx-background-color: -fx--text-color;
 }
+
+/*Dialog's button bar and button-types*/
+.button-bar .button {
+    -fx-background-color: -fx--special-background;
+    -fx-text-fill: -fx--text-color;
+}
