@@ -19,7 +19,7 @@ public final class GameHandler {
 
     public static boolean startNewGame(){
 
-        phaseOne();
+        noticePlayersThatGameStarted();
 
         @NotNull String cardMaster = randomCardMaster();
         @NotNull BlackCard blackCard = randomBlackCard();
@@ -173,7 +173,7 @@ public final class GameHandler {
         ArrayList<BlackCard> blackCardList = Server.getBlackCardsDB().getBlackCardsList();
         return blackCardList.get(new Random().nextInt()%blackCardList.size());
     }
-    private static void phaseOne(){
+    private static void noticePlayersThatGameStarted(){
         //Notice the players that the game started
         LobbyHandler.broadcastMessage(CCU.Defs.Protocol.Lobby.GAME_START);
 
