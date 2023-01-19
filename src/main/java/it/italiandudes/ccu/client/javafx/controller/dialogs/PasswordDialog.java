@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Window;
 
 import java.net.URL;
@@ -30,6 +31,10 @@ public class PasswordDialog extends Dialog<ButtonType> implements Initializable 
     public VBox vb_error;
     @FXML
     public Label lb_error;
+
+    public PasswordDialog(){
+        initModality(Modality.APPLICATION_MODAL);
+    }
 
     @GraphicalOperation
     public String getPwd(){

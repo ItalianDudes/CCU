@@ -57,6 +57,9 @@ public final class ServerSelectionController implements Initializable {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
+
+                        Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.REQUEST_PWD_TEXT));
+
                         String serverName = txt_serverName.getText();
                         boolean isServerName, isAlias;
                         isServerName= serverName != null && !serverName.isEmpty();
@@ -83,10 +86,12 @@ public final class ServerSelectionController implements Initializable {
                                     });
                                     boolean isPwdOk = false;
                                     boolean cancel = false;
+                                    Client.getLoadingStage().close();
                                     while(!isPwdOk && !cancel){
                                         try{
                                             Optional<ButtonType> result = pwdDialog.showAndWait();
                                             if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.PWD_CONTROL_TEXT));
                                                 String pwd = pwdDialog.getPwd();
                                                 if(savePwd){
                                                     model.savePwd(pwd);
@@ -103,9 +108,12 @@ public final class ServerSelectionController implements Initializable {
                                             }
                                         }catch(IOException e){
                                             Platform.runLater(()-> pwdDialog.setErrorLabel(e.getMessage()));
+                                        }finally {
+                                            Client.getLoadingStage().close();
                                         }
                                     }
 
+                                    Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.NAME_REQUEST_LOADING_TEXT));
                                     if(!cancel){
                                         NameDialog nameDialog = new NameDialog();
                                         saveName=false;
@@ -114,10 +122,12 @@ public final class ServerSelectionController implements Initializable {
                                             nameDialog.getDialogPane().lookup(JFXDefs.IdDefs.REQUEST_CHKBOX).addEventFilter(
                                                     ActionEvent.ACTION, event -> saveName = ((CheckBox) event.getSource()).selectedProperty().get());
                                         });
+                                        Client.getLoadingStage().close();
                                         while(!isNameOk && !cancel){
                                             try{
                                                 Optional<ButtonType> result = nameDialog.showAndWait();
                                                 if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                    Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.CHECKING_NAME_VALIDITY_TEXT));
                                                     String name = nameDialog.getName();
                                                     if(saveName){
                                                         model.saveName(name);
@@ -134,6 +144,8 @@ public final class ServerSelectionController implements Initializable {
                                                 }
                                             }catch(IOException | UsernameAlreadyBoundException e){
                                                 Platform.runLater(()->nameDialog.setErrorLabel(e.getMessage()));
+                                            }finally {
+                                                Client.getLoadingStage().close();
                                             }
                                         }
                                     }
@@ -150,10 +162,12 @@ public final class ServerSelectionController implements Initializable {
                                                     saveName = ((CheckBox) event.getSource()).selectedProperty().get();
                                                 });
                                     });
+                                    Client.getLoadingStage().close();
                                     while(!isNameOk && !cancel){
                                         try{
                                             Optional<ButtonType> result = nameDialog.showAndWait();
                                             if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.CHECKING_NAME_VALIDITY_TEXT));
                                                 String name = nameDialog.getName();
                                                 if(saveName){
                                                     model.saveName(name);
@@ -170,11 +184,15 @@ public final class ServerSelectionController implements Initializable {
                                             }
                                         }catch(IOException | UsernameAlreadyBoundException e){
                                             Platform.runLater(()->nameDialog.setErrorLabel(e.getMessage()));
+                                        }finally {
+                                            Client.getLoadingStage().close();
                                         }
                                     }
                                 }
 
                                 if(isNameOk){
+                                    Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.LOADIG_LOBBY_TEXT));
+                                    //TODO: caricare i dati necessari alla lobby prima di lanciare lo stage
                                     Platform.runLater(()->{
                                         try{
                                             /*Init Lobby Stage launch*/
@@ -188,8 +206,7 @@ public final class ServerSelectionController implements Initializable {
                                             controller.setModel(new LobbyModel());
 
                                             Client.getStage().setScene(scene);
-                                            Client.getStage().setTitle(JFXDefs.AppAssets.APP_TITLE);
-                                            Client.getStage().getIcons().add(JFXDefs.AppAssets.APP_ICON);
+                                            Client.getLoadingStage().close();
                                             Client.getStage().show();
                                         } catch (IOException e) {
                                             Platform.runLater(()->{
@@ -200,6 +217,8 @@ public final class ServerSelectionController implements Initializable {
                                                     vb_errorSupplement.setVisible(true);
                                                 }
                                             });
+                                        }finally {
+                                            Client.getLoadingStage().close();
                                         }
                                     });
                                 }

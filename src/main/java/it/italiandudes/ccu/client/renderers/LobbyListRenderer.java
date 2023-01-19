@@ -41,6 +41,8 @@ public class LobbyListRenderer implements Callback<ListView<LobbyRendererModel>,
                     HBox.setHgrow(readyCheck, Priority.ALWAYS);
 
                     hBox.getChildren().addAll(username,readyCheck);
+                    
+                    setGraphic(hBox);
                 }
             }
         };

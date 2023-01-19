@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,6 +25,10 @@ public class NameDialog extends Dialog<ButtonType> implements Initializable {
     public VBox vb_error;
     @FXML
     public Label lb_error;
+
+    public NameDialog(){
+        initModality(Modality.APPLICATION_MODAL);
+    }
 
     @GraphicalOperation
     public String getName(){

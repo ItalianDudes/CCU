@@ -76,33 +76,60 @@ public final class ServerSelectionListController implements Initializable {
     }
 
     public void doDeleteServer(ActionEvent actionEvent) {
-        try {
-            if(selectedServerIndex>=0){
-                ClientSingleton.getInstance().deleteServer(ClientSingleton.getInstance().getServer(selectedServerIndex));
+        Service<Void> deleteService = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        Client.getLoadingController().show(Client.Defs.LoadingTexts.DELETING_SERVER_TEXT);
+                        try {
+                            if(selectedServerIndex>=0){
+                                ClientSingleton.getInstance().deleteServer(ClientSingleton.getInstance().getServer(selectedServerIndex));
 
-                if(ClientSingleton.getInstance().isServerEmpty()){
-                    Client.getStage().setScene(SceneLoading.getScene());
-                    //Since no server is saved, I automatically launch the scene to make you add a server.
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.SCENE_STARTUP_1));
-                    Parent root = loader.load();
+                                if(ClientSingleton.getInstance().isServerEmpty()){
+                                    Platform.runLater(()->{
+                                        try{
+                                            Client.getStage().setScene(SceneLoading.getScene());
+                                            //Since no server is saved, I automatically launch the scene to make you add a server.
+                                            FXMLLoader loader = new FXMLLoader(getClass().getResource(JFXDefs.SceneDefs.SCENE_STARTUP_1));
+                                            Parent root = loader.load();
 
-                    Scene scene = new Scene(root);
+                                            Scene scene = new Scene(root);
 
-                    ServerSelectionController controller = loader.getController();
-                    controller.setModel(new ServerSelectionModel());
+                                            ServerSelectionController controller = loader.getController();
+                                            controller.setModel(new ServerSelectionModel());
 
-                    Client.getStage().setScene(scene);
-                }else{
-                    //I reload the list view with the updated servers' list.
-                    lv_serversList.getItems().remove(selectedServerIndex);
-                }
+                                            Client.getLoadingStage().close();
+                                            Client.getStage().setScene(scene);
+                                        } catch (IOException e) {
+                                            lb_errorMessage.setText(e.getMessage());
+                                            if(!vb_errorMessage.isVisible()) {
+                                                vb_errorMessage.setVisible(true);
+                                            }
+                                        }
+                                    });
+                                }else{
+                                    //I reload the list view with the updated servers' list.
+                                    Platform.runLater(()->lv_serversList.getItems().remove(selectedServerIndex));
+                                }
+                            }
+                        } catch (IOException | ConfigFormatException e) {
+                            Platform.runLater(()->{
+                                lb_errorMessage.setText(e.getMessage());
+                                if(!vb_errorMessage.isVisible()) {
+                                    vb_errorMessage.setVisible(true);
+                                }
+                            });
+                        }finally {
+                            Client.getLoadingStage().close();
+                        }
+                        return null;
+                    }
+                };
             }
-        } catch (IOException | ConfigFormatException e) {
-            lb_errorMessage.setText(e.getMessage());
-            if(!vb_errorMessage.isVisible()){
-                vb_errorMessage.setVisible(true);
-            }
-        }
+        };
+        deleteService.start();
     }
 
     public void doConfirm(ActionEvent actionEvent) {
@@ -112,6 +139,7 @@ public final class ServerSelectionListController implements Initializable {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
+                        Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.REQUEST_PWD_TEXT));
                         if(selectedServerIndex>=0){
                             try {
                                 boolean isNameOk=false;
@@ -133,10 +161,12 @@ public final class ServerSelectionListController implements Initializable {
                                     });
                                     boolean isPwdOk = false;
                                     boolean cancel = false;
+                                    Client.getLoadingStage().close();
                                     while(!isPwdOk && !cancel){
                                         try{
                                             Optional<ButtonType> result = pwdDialog.showAndWait();
                                             if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.PWD_CONTROL_TEXT));
                                                 String pwd = pwdDialog.getPwd();
                                                 if(savePwd){
                                                     model.savePwd(pwd);
@@ -153,10 +183,13 @@ public final class ServerSelectionListController implements Initializable {
                                             }
                                         }catch(IOException e){
                                             Platform.runLater(()->pwdDialog.setErrorLabel(e.getMessage()));
+                                        }finally {
+                                            Client.getLoadingStage().close();
                                         }
                                     }
 
                                     if(!cancel){
+                                        Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.NAME_REQUEST_LOADING_TEXT));
                                         NameDialog nameDialog = new NameDialog();
                                         saveName=false;
                                         Platform.runLater(()->{
@@ -166,10 +199,12 @@ public final class ServerSelectionListController implements Initializable {
                                                         saveName = ((CheckBox) event.getSource()).selectedProperty().get();
                                                     });
                                         });
+                                        Client.getLoadingStage().close();
                                         while(!isNameOk && !cancel){
                                             try{
                                                 Optional<ButtonType> result = nameDialog.showAndWait();
                                                 if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                    Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.CHECKING_NAME_VALIDITY_TEXT));
                                                     String name = nameDialog.getName();
                                                     if(saveName){
                                                         model.saveName(name);
@@ -186,6 +221,8 @@ public final class ServerSelectionListController implements Initializable {
                                                 }
                                             }catch(IOException | UsernameAlreadyBoundException e){
                                                 Platform.runLater(()->nameDialog.setErrorLabel(e.getMessage()));
+                                            }finally {
+                                                Client.getLoadingStage().close();
                                             }
                                         }
                                     }
@@ -201,10 +238,12 @@ public final class ServerSelectionListController implements Initializable {
                                                     saveName = ((CheckBox) event.getSource()).selectedProperty().get();
                                                 });
                                     });
+                                    Client.getLoadingStage().close();
                                     while(!isNameOk && !cancel){
                                         try{
                                             Optional<ButtonType> result = nameDialog.showAndWait();
                                             if(result.isPresent() && result.get() == ButtonType.FINISH) {
+                                                Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.CHECKING_NAME_VALIDITY_TEXT));
                                                 String name = nameDialog.getName();
                                                 if(saveName){
                                                     model.saveName(name);
@@ -221,11 +260,15 @@ public final class ServerSelectionListController implements Initializable {
                                             }
                                         }catch(IOException | UsernameAlreadyBoundException e){
                                             Platform.runLater(()->nameDialog.setErrorLabel(e.getMessage()));
+                                        }finally {
+                                            Client.getLoadingStage().close();
                                         }
                                     }
                                 }
 
                                 if(isNameOk){
+                                    Platform.runLater(()->Client.getLoadingController().show(Client.Defs.LoadingTexts.LOADIG_LOBBY_TEXT));
+                                    //TODO: caricare i dati necessari alla lobby prima di lanciare lo stage
                                     Platform.runLater(()->{
                                         try{
                                             /*Init Lobby Stage launch*/
@@ -238,10 +281,8 @@ public final class ServerSelectionListController implements Initializable {
                                             LobbyController controller = loader.getController();
                                             controller.setModel(new LobbyModel());
 
+                                            Client.getLoadingStage().close();
                                             Client.getStage().setScene(scene);
-                                            Client.getStage().setTitle(JFXDefs.AppAssets.APP_TITLE);
-                                            Client.getStage().getIcons().add(JFXDefs.AppAssets.APP_ICON);
-                                            Client.getStage().show();
                                         } catch (IOException e) {
                                             Platform.runLater(()->{
                                                 lb_errorMessage.setText(e.getMessage());
@@ -249,6 +290,8 @@ public final class ServerSelectionListController implements Initializable {
                                                     vb_errorMessage.setVisible(true);
                                                 }
                                             });
+                                        }finally {
+                                            Client.getLoadingStage().close();
                                         }
                                     });
                                 }
@@ -260,6 +303,8 @@ public final class ServerSelectionListController implements Initializable {
                                         vb_errorMessage.setVisible(true);
                                     }
                                 });
+                            }finally {
+                                Client.getLoadingStage().close();
                             }
                         }
                         return null;

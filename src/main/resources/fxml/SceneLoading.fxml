@@ -2,19 +2,22 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.ccu.client.javafx.controller.ControllerSceneLoading">
-   <center>
-      <ImageView fx:id="loadingView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
-   </center>
-   <top>
-      <Label text="Caricamento..." BorderPane.alignment="CENTER" />
-   </top>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="stageBackground" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.ccu.client.javafx.controller.ControllerSceneLoading">
    <bottom>
-      <Label text="La durata dipende dalla velocita' del tuo pc e/o della tua rete" BorderPane.alignment="CENTER" />
+      <ProgressBar maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
    </bottom>
-   <padding>
-      <Insets bottom="15.0" left="10.0" right="10.0" top="15.0" />
-   </padding>
+   <center>
+      <Label fx:id="lb_loadingText" styleClass="labelColor" stylesheets="@../style.css" text="Caricamento" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+   </center>
 </BorderPane>

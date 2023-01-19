@@ -3,13 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="stageBackground" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.ccu.client.javafx.controller.LobbyController">
    <center>
@@ -30,24 +30,16 @@
       </VBox>
    </center>
    <top>
-      <HBox prefHeight="18.0" prefWidth="474.0" BorderPane.alignment="CENTER">
-         <children>
-            <Region maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="223.0" HBox.hgrow="ALWAYS" />
-            <Label fx:id="lb_score" maxWidth="-Infinity" prefHeight="18.0" prefWidth="346.0" styleClass="labelColor" stylesheets="@../style.css" text="Punteggio:">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="lb_timer" maxWidth="-Infinity" prefHeight="18.0" prefWidth="329.0" styleClass="labelColor" stylesheets="@../style.css" text="Tempo:">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Region maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="226.0" HBox.hgrow="ALWAYS" />
-         </children>
+      <Label fx:id="lb_score" maxWidth="-Infinity" prefHeight="18.0" prefWidth="346.0" styleClass="labelColor" stylesheets="@../style.css" text="Punteggio:" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
          <BorderPane.margin>
-            <Insets left="40.0" right="40.0" top="10.0" />
+            <Insets top="10.0" />
          </BorderPane.margin>
-      </HBox>
+      </Label>
    </top>
+   <bottom>
+      <ProgressBar fx:id="pb_timer" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

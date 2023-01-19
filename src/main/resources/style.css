@@ -8,6 +8,8 @@
     -fx--blackcard-background: #111111;
 
     -fx--error-text: #FF4040;
+    -fx--cherry-color: #D2042D;
+    -fx--pearl-color: #E2DFD2;
 }
 
 .stageBackground {
@@ -89,4 +91,15 @@
 .button-bar .button {
     -fx-background-color: -fx--special-background;
     -fx-text-fill: -fx--text-color;
+}
+
+/*Progress bar's customization*/
+.progress-bar .bar{
+    -fx-background-insets: 0;
+    -fx-background-color: linear-gradient(to right, -fx--cherry-color, -fx--not-clicable);
+}
+
+.progress-bar .track{
+    -fx-background-insets: 0;
+    -fx-background-color: -fx--not-clicable;
 }
