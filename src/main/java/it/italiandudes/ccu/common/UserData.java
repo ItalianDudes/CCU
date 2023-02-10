@@ -1,5 +1,6 @@
 package it.italiandudes.ccu.common;
 
+import it.italiandudes.idl.common.Credential;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -110,6 +111,9 @@ public final class UserData {
     }
     @NotNull public ArrayList<GameCard> getCurrentCards(){
         return currentCards;
+    }
+    @NotNull public Credential getCredentials() {
+        return new Credential(username, serverPassword, false);
     }
     @Override
     public boolean equals(Object o) {

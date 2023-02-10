@@ -9,8 +9,8 @@ import java.io.IOException;
 public final class NetUserData implements Runnable {
 
     //Attributes
-    private final UserData userData;
-    private final Thread thread;
+    private @NotNull final UserData userData;
+    private @NotNull final Thread thread;
 
     //Constructors
     public NetUserData(@NotNull UserData userData){
@@ -20,11 +20,30 @@ public final class NetUserData implements Runnable {
     }
 
     //Methods
+    @NotNull
     public Thread getThread(){
         return thread;
     }
+    @NotNull
     public UserData getUserData(){
         return userData;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NetUserData that = (NetUserData) o;
+
+        return getUserData().equals(that.getUserData());
+    }
+    @Override
+    public int hashCode() {
+        return getUserData().hashCode();
+    }
+    @Override
+    public String toString() {
+        return userData.toString();
     }
 
     //Thread Method

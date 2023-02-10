@@ -38,16 +38,22 @@ public final class LoginHandler implements Runnable {
                 }
             }
 
-            username = RawSerializer.receiveString(connection.getInputStream());
+            String result;
+            UserData userData;
+            boolean alreadyConnected;
+            do {
+                alreadyConnected = false;
 
-            UserData userData = new UserData(username, password, connection);
+                username = RawSerializer.receiveString(connection.getInputStream());
 
-            String result = LobbyHandler.addUserToLobby(userData);
+                userData = new UserData(username, password, connection);
 
-            if(result == null){
-                RawSerializer.sendString(connection.getOutputStream(), CCU.Defs.Protocol.Login.AUTH_ERROR_SAME_USER_LOGGED);
-                throw new RuntimeException("Another user is logged with this username");
-            }
+                result = LobbyHandler.addUserToLobby(userData);
+                if(result.equals(CCU.Defs.Protocol.Login.AUTH_ERROR_SAME_USER_LOGGED)) {
+                    alreadyConnected = true;
+                    RawSerializer.sendString(connection.getOutputStream(), CCU.Defs.Protocol.Login.AUTH_ERROR_SAME_USER_LOGGED);
+                }
+            } while (alreadyConnected);
 
             if(result.equals(CCU.Defs.Protocol.Login.SERVER_FULL)){
                 RawSerializer.sendString(connection.getOutputStream(), CCU.Defs.Protocol.Login.SERVER_FULL);

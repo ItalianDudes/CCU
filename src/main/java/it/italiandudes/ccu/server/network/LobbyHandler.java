@@ -4,21 +4,21 @@ import it.italiandudes.ccu.CCU;
 import it.italiandudes.ccu.common.UserData;
 import it.italiandudes.ccu.server.Server;
 import it.italiandudes.idl.common.RawSerializer;
-import it.italiandudes.idl.common.StringHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Objects;
 
+@SuppressWarnings("unused")
 public final class LobbyHandler {
 
     //Player List
     @NotNull private static final HashSet<NetUserData> userList = new HashSet<>();
 
     //Methods
+    @NotNull
     public static String addUserToLobby(@NotNull UserData userData){
         if(userList.size()>=Server.getMaxPlayers()) return CCU.Defs.Protocol.Login.SERVER_FULL;
         NetUserData netUserData = new NetUserData(userData);
@@ -27,8 +27,9 @@ public final class LobbyHandler {
             LobbyHandler.broadcastMessage(netUserData.getUserData().getUsername());
             netUserData.getThread().start();
             return CCU.Defs.Protocol.Lobby.PLAYER_JOIN;
+        }else{
+            return CCU.Defs.Protocol.Login.AUTH_ERROR_SAME_USER_LOGGED;
         }
-        return null;
     }
     public static ArrayList<String> getUsersConnected(){
         ArrayList<String> users = new ArrayList<>();
