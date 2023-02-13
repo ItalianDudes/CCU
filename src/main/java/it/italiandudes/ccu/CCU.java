@@ -111,6 +111,8 @@ public final class CCU {
                 public static final String PLAYER_JOIN = "pjoin";
                 public static final String PLAYER_QUIT = "pquit";
                 public static final String GAME_START = "gstart";
+                public static final String PLAYER_READY = "pready";
+                public static final String PLAYER_NOT_READY = "pnready";
             }
             public static final class Game {
                 public static final class Role {

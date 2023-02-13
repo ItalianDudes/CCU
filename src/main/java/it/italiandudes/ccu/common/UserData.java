@@ -1,6 +1,5 @@
 package it.italiandudes.ccu.common;
 
-import it.italiandudes.idl.common.Credential;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -18,6 +17,7 @@ public final class UserData {
 
     //Game Data
     private boolean isCardMaster;
+    private boolean isPlayerReady;
     private int roundWon;
     @NotNull private final ArrayList<GameCard> currentCards = new ArrayList<>();
 
@@ -27,6 +27,7 @@ public final class UserData {
         this.username = username;
         this.serverPassword = serverPassword;
         this.connection = connection;
+        this.isPlayerReady = false;
     }
     public UserData(@NotNull String username, @NotNull String serverPassword, @NotNull String hostname, int port){
 
@@ -34,6 +35,7 @@ public final class UserData {
 
         this.username = username;
         this.serverPassword = serverPassword;
+        this.isPlayerReady = false;
 
         try {
             this.connection = new Socket(hostname, port);
@@ -51,6 +53,7 @@ public final class UserData {
 
         this.username = username;
         this.serverPassword = serverPassword;
+        this.isPlayerReady = false;
 
         if(connectionData.split(":").length!=2)
             throw new RuntimeException("Connection data Domain:Port / IP:Port are not valid.");
@@ -94,6 +97,12 @@ public final class UserData {
     public void setServerPassword(@NotNull String serverPassword){
         this.serverPassword = serverPassword;
     }
+    public boolean isPlayerReady() {
+        return isPlayerReady;
+    }
+    public void setPlayerReady(boolean playerReadyState) {
+        isPlayerReady = playerReadyState;
+    }
     @NotNull public Socket getConnection(){
         return connection;
     }
@@ -112,9 +121,6 @@ public final class UserData {
     @NotNull public ArrayList<GameCard> getCurrentCards(){
         return currentCards;
     }
-    @NotNull public Credential getCredentials() {
-        return new Credential(username, serverPassword, false);
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,6 +129,7 @@ public final class UserData {
         UserData userData = (UserData) o;
 
         if (isCardMaster() != userData.isCardMaster()) return false;
+        if (isPlayerReady() != userData.isPlayerReady()) return false;
         if (getRoundWon() != userData.getRoundWon()) return false;
         if (!getUsername().equals(userData.getUsername())) return false;
         if (!getServerPassword().equals(userData.getServerPassword())) return false;
@@ -135,6 +142,7 @@ public final class UserData {
         result = 31 * result + getServerPassword().hashCode();
         result = 31 * result + getConnection().hashCode();
         result = 31 * result + (isCardMaster() ? 1 : 0);
+        result = 31 * result + (isPlayerReady() ? 1 : 0);
         result = 31 * result + getRoundWon();
         result = 31 * result + getCurrentCards().hashCode();
         return result;
@@ -146,6 +154,7 @@ public final class UserData {
                 ", serverPassword='" + serverPassword + '\'' +
                 ", connection=" + connection +
                 ", isCardMaster=" + isCardMaster +
+                ", isPlayerReady=" + isPlayerReady +
                 ", roundWon=" + roundWon +
                 ", currentCards=" + currentCards +
                 '}';

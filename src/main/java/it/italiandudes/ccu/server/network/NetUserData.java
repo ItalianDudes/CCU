@@ -25,6 +25,10 @@ public final class NetUserData implements Runnable {
         return thread;
     }
     @NotNull
+    public String getUsername() {
+        return userData.getUsername();
+    }
+    @NotNull
     public UserData getUserData(){
         return userData;
     }
@@ -35,11 +39,11 @@ public final class NetUserData implements Runnable {
 
         NetUserData that = (NetUserData) o;
 
-        return getUserData().equals(that.getUserData());
+        return getUserData().getUsername().equals(that.getUserData().getUsername());
     }
     @Override
     public int hashCode() {
-        return getUserData().hashCode();
+        return getUserData().getUsername().hashCode();
     }
     @Override
     public String toString() {

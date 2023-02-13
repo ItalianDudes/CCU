@@ -46,18 +46,38 @@ public final class LobbyHandler {
     }
     public static boolean removeUserFromLobby(@NotNull String username){
         for(NetUserData netUserData : userList){
-            if(netUserData.getUserData().getUsername().equals(username)){
+            if(netUserData.getUsername().equals(username)){
                 try {
                     RawSerializer.sendString(netUserData.getUserData().getConnection().getOutputStream(), CCU.Defs.Protocol.DISCONNECT);
                 }catch (IOException ignored){}
                 netUserData.getThread().interrupt();
                 userList.remove(netUserData);
+                try{
+                    netUserData.getUserData().getConnection().close();
+                }catch (Exception ignored){}
                 LobbyHandler.broadcastMessage(CCU.Defs.Protocol.Lobby.PLAYER_QUIT);
                 LobbyHandler.broadcastMessage(netUserData.getUserData().getUsername());
                 return true;
             }
         }
         return false;
+    }
+    public static int getReadyPlayersAmount() {
+        int playersReady = 0;
+        for(NetUserData netUserData : userList){
+            if(netUserData.getUserData().isPlayerReady()) playersReady++;
+        }
+        return playersReady;
+    }
+    public static boolean areAllPlayersReady() {
+        return getReadyPlayersAmount()==userList.size();
+    }
+    public static void waitForGameStart(Thread thread) {
+        Thread t = new Thread(() -> {
+            //TODO: use interrupt to notice the game start
+        });
+        t.setDaemon(true);
+        t.start();
     }
     public static int broadcastMessage(@NotNull String message){
         int removedUsers = 0;
@@ -85,7 +105,7 @@ public final class LobbyHandler {
     }
     public static boolean isConnected(@NotNull String username){
         for(NetUserData netUserData : userList){
-            if(netUserData.getUserData().getUsername().equals(username))
+            if(netUserData.getUsername().equals(username))
                 return true;
         }
         return false;
@@ -95,14 +115,14 @@ public final class LobbyHandler {
     }
     @Nullable public static UserData getUserData(@NotNull String username){
         for(NetUserData netUserData : userList){
-            if(netUserData.getUserData().getUsername().equals(username))
+            if(netUserData.getUsername().equals(username))
                 return netUserData.getUserData();
         }
         return null;
     }
     @Nullable public static NetUserData getNetUserData(@NotNull String username){
         for(NetUserData netUserData : userList){
-            if(netUserData.getUserData().getUsername().equals(username))
+            if(netUserData.getUsername().equals(username))
                 return netUserData;
         }
         return null;
